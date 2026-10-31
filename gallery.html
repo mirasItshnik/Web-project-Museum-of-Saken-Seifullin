@@ -6,7 +6,7 @@
   <meta name="description" content="Interactive photo tour showcasing historical photos, museum halls, and architectural details.">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="css/base.css">
-  <link rel="stylesheet" href="./style1.css">
+  <link rel="stylesheet" href="css/site.css">
   <title>Gallery Tour - Saken Seifullin Museum</title>
 </head>
 <body class="d-flex flex-column min-vh-100" id="gallery-body">
@@ -15,7 +15,7 @@
     <nav class="navbar navbar-expand-lg navbar-dark bg-brand py-3" id="main-navbar">
       <div class="container-fluid">
         <a class="navbar-brand d-flex align-items-center gap-3 text-wrap" href="index.html" id="brand-link">
-          <img src="logo museum.jpg" alt="Museum logo" class="rounded" style="width: 50px; height: auto;">
+          <img src="images/logo museum.jpg" alt="Museum logo" class="rounded" style="width: 50px; height: auto;">
           <span>
             <strong class="d-block h5 mb-0">THE STATE MUSEUM</strong>
             <small class="fs-6 text-warning">named after S. Seifullin</small>
@@ -35,7 +35,7 @@
             <li class="nav-item"><a class="nav-link active" href="gallery.html">Gallery</a></li>
             <li class="nav-item"><a class="nav-link" href="feedback.html">Visit &amp; Feedback</a></li>
             <li class="nav-item"><a class="nav-link" href="contacts.html">Contacts</a></li>
-            <li class="nav-item"><a class="nav-link" href="Museum history.html">Museum history</a></li>
+            <li class="nav-item"><a class="nav-link" href="museum-history.html">Museum history</a></li>
             <li class="nav-item"><a class="nav-link" href="poetry.html">Poetry Wall</a></li>
           </ul>
         </div>
@@ -48,7 +48,7 @@
       <div class="row">
         <div class="col-12 col-lg-8 text-center text-md-start">
           <h1 class="hero-title display-5 mb-3">Interactive Museum Photo Tour</h1>
-          <p class="hero-subtitle lead mb-4">Explore high-resolution interior views with interactive hotspots, document magnification, and educational contextual panels.</p>
+          <p class="hero-subtitle lead mb-4">Explore museum photographs, enlarge images, and learn about the exhibits.</p>
           <div class="gold-divider mx-auto mx-md-0"></div>
         </div>
       </div>
@@ -58,18 +58,10 @@
   <main class="container my-5 flex-grow-1" id="gallery-main-content">
     <section>
       <h2 class="display-6 fw-bold border-bottom pb-2 text-center text-md-start">Visual Tour of the Museum Halls</h2>
-      <p class="lead text-muted text-center text-md-start mb-4">Click on any photograph to launch the Interactive Museum Viewer with Hotspots &amp; Details.</p>
+      <p class="lead text-muted text-center text-md-start mb-4">Click on any photograph to open the viewer, browse photos, and expand the viewer.</p>
       
       <!-- Панель управления -->
       <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4 p-3 rounded border bg-light shadow-sm" id="gallery-controls">
-        <div class="d-flex gap-2 align-items-center">
-          <div class="btn-group btn-group-sm" role="group" aria-label="Font Size">
-            <button type="button" class="btn btn-outline-secondary" id="btn-font-decrease">A-</button>
-            <button type="button" class="btn btn-outline-secondary" id="btn-font-reset">A</button>
-            <button type="button" class="btn btn-outline-secondary" id="btn-font-increase">A+</button>
-          </div>
-        </div>
-
         <div class="d-flex gap-2 align-items-center ms-auto">
           <button type="button" class="btn btn-gold-outline btn-sm" id="btn-fact-of-day">💡 Fact of the Day</button>
           <span class="badge bg-secondary p-2" id="photo-counter">Photo 1 of 3</span>
@@ -88,21 +80,21 @@
         </div> 
         <div class="carousel-inner">
           <div class="carousel-item active" id="slide-1">
-            <img src="Museum inner view.jpeg" class="d-block w-100 object-fit-cover" style="height: 450px; cursor: pointer;" alt="Interior view of the Saken Seifullin Museum">
+            <img src="images/Museum inner view.jpeg" class="d-block w-100 object-fit-cover" style="height: 450px; cursor: pointer;" alt="Interior view of the Saken Seifullin Museum">
             <div class="carousel-caption d-none d-md-block bg-dark bg-opacity-50 rounded p-2">
               <h5>Interior View of the Museum</h5>
               <p>Traditional wooden furniture reflecting the era of Saken Seifullin.</p>
             </div>
           </div>
           <div class="carousel-item" id="slide-2">
-            <img src="Personal belongings.jpg" class="d-block w-100 object-fit-cover" style="height: 450px; cursor: pointer;" alt="Personal belongings">
+            <img src="images/Personal belongings.jpg" class="d-block w-100 object-fit-cover" style="height: 450px; cursor: pointer;" alt="Personal belongings">
             <div class="carousel-caption d-none d-md-block bg-dark bg-opacity-50 rounded p-2">
               <h5>Personal Belongings Showcase</h5>
               <p>Historical everyday objects, clock, and rare personal items.</p>
             </div>
           </div>
           <div class="carousel-item" id="slide-3">
-            <img src="Saken s suit.png" class="d-block w-100 object-fit-cover" style="height: 450px; cursor: pointer;" alt="Saken's suit">
+            <img src="images/Saken s suit.png" class="d-block w-100 object-fit-cover" style="height: 450px; cursor: pointer;" alt="Saken's suit">
             <div class="carousel-caption d-none d-md-block bg-dark bg-opacity-50 rounded p-2">
               <h5>Historical Clothing Artifact</h5>
               <p>Saken Seifullin's authentic suit preserved in a glass showcase.</p>
@@ -124,7 +116,7 @@
         <div class="col-12 col-md-4 gallery-card-col" data-index="0">
           <div class="card h-100 shadow-sm border-0 position-relative overflow-hidden gallery-card" style="cursor: pointer;">
             <span class="position-absolute top-0 start-0 badge bg-dark m-2 p-2 opacity-75 z-1">Interior</span>
-            <img src="Museum inner view.jpeg" class="card-img-top object-fit-cover gallery-img-click" style="height: 250px;" alt="Museum Inner View">
+            <img src="images/Museum inner view.jpeg" class="card-img-top object-fit-cover gallery-img-click" style="height: 250px;" alt="Museum Inner View">
             <div class="card-body d-flex flex-column">
               <h5 class="card-title text-success fs-6">Museum Inner View</h5>
               <p class="card-text text-muted small mb-0">Traditional furniture creating an authentic historical atmosphere.</p>
@@ -135,7 +127,7 @@
         <div class="col-12 col-md-4 gallery-card-col" data-index="1">
           <div class="card h-100 shadow-sm border-0 position-relative overflow-hidden gallery-card" style="cursor: pointer;">
             <span class="position-absolute top-0 start-0 badge bg-dark m-2 p-2 opacity-75 z-1">Personal Items</span>
-            <img src="Personal belongings.jpg" class="card-img-top object-fit-cover gallery-img-click" style="height: 250px;" alt="Personal Belongings">
+            <img src="images/Personal belongings.jpg" class="card-img-top object-fit-cover gallery-img-click" style="height: 250px;" alt="Personal Belongings">
             <div class="card-body d-flex flex-column">
               <h5 class="card-title text-success fs-6">Personal Belongings</h5>
               <p class="card-text text-muted small mb-0">Clock, dishes, and personal items preserved in showcases.</p>
@@ -146,7 +138,7 @@
         <div class="col-12 col-md-4 gallery-card-col" data-index="2">
           <div class="card h-100 shadow-sm border-0 position-relative overflow-hidden gallery-card" style="cursor: pointer;">
             <span class="position-absolute top-0 start-0 badge bg-dark m-2 p-2 opacity-75 z-1">Attire</span>
-            <img src="Saken s suit.png" class="card-img-top object-fit-cover gallery-img-click" style="height: 250px;" alt="Authentic Suit">
+            <img src="images/Saken s suit.png" class="card-img-top object-fit-cover gallery-img-click" style="height: 250px;" alt="Authentic Suit">
             <div class="card-body d-flex flex-column">
               <h5 class="card-title text-success fs-6">Authentic Suit</h5>
               <p class="card-text text-muted small mb-0">Suit displayed in a showcase reflecting early 20th-century fashion.</p>
@@ -156,7 +148,7 @@
       </div>
     </section>
 
-    <!-- МОДАЛЬНОЕ ОКНО LIGHTBOX (ХОТСПОТЫ + ЗУМ) -->
+    <!-- МОДАЛЬНОЕ ОКНО ПРОСМОТРА ФОТО -->
     <div class="modal fade" id="lightboxModal" tabindex="-1" aria-labelledby="lightboxModalLabel" aria-hidden="true">
       <div class="modal-dialog modal-xl modal-dialog-centered">
         <div class="modal-content border-0 shadow-lg">
@@ -166,10 +158,9 @@
           </div>
           <div class="modal-body p-0 bg-dark text-white position-relative">
             <div class="row g-0">
-              <div class="col-12 col-lg-8 position-relative overflow-hidden text-center bg-black d-flex align-items-center justify-content-center" style="min-height: 400px;">
+              <div class="col-12 position-relative overflow-hidden text-center bg-black d-flex align-items-center justify-content-center" style="min-height: 400px;">
                 <div id="lightbox-img-wrapper" class="position-relative w-100 h-100 d-flex align-items-center justify-content-center">
                   <img id="lightbox-img" src="" class="img-fluid object-fit-contain" style="max-height: 500px;" alt="Enlarged view">
-                  <div id="hotspots-container" class="position-absolute top-0 start-0 w-100 h-100"></div>
                 </div>
                 
                 <!-- Кнопки управления зумом -->
@@ -185,15 +176,10 @@
               </div>
 
               <!-- Боковая инфо-панель -->
-              <div class="col-12 col-lg-4 p-4 bg-dark text-light d-flex flex-column border-start border-secondary">
+              <div class="col-12 p-3 bg-dark text-light d-flex flex-column border-top border-secondary">
                 <span class="badge bg-warning text-dark align-self-start mb-2" id="lightbox-tag">Interior</span>
                 <h4 class="h5 fw-bold text-warning" id="lightbox-card-title">Museum Photo</h4>
-                <p class="small text-muted mb-3" id="lightbox-desc">Description of the selected photo.</p>
-                <hr class="border-secondary">
-                <div class="mt-auto">
-                  <h6 class="fw-bold text-gold mb-1" id="hotspot-focus-title">📍 Interactive Hotspots</h6>
-                  <p class="small text-secondary mb-0" id="hotspot-focus-desc">Hover or click on any pulsing marker on the photograph to inspect highlighted details.</p>
-                </div>
+                <p class="small text-light opacity-75 mb-0" id="lightbox-desc">Description of the selected photo.</p>
               </div>
             </div>
           </div>
@@ -220,12 +206,13 @@
       </div>
       <hr class="border-light my-3">
       <div class="text-center text-muted small">
-        <p class="mb-0 text-white">&copy; 2026 Saken Seifullin Museum. All rights reserved. <a href="colophon.html" class="text-warning">Colophon</a></p>
+        <p class="mb-0 text-white">&copy; 2026 Saken Seifullin Museum. All rights reserved. <a href="README.md" class="text-warning">Project notes</a></p>
       </div>
     </div>
   </footer>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="js/main.js" defer></script>
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script src="js/main.js"></script>
 </body>
 </html>

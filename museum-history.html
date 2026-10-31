@@ -1,0 +1,360 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Discover the history, founding, and cultural milestones of the State Museum named after Saken Seifullin.">
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/site.css">
+
+  <title>Museum History - Saken Seifullin Museum</title>
+</head>
+
+<body class="d-flex flex-column min-vh-100">
+
+  <header class="bg-brand text-white shadow-sm">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-brand py-3" id="main-navbar">
+      <div class="container-fluid">
+
+        <a class="navbar-brand d-flex align-items-center gap-3 text-wrap"
+           href="index.html"
+           id="brand-link">
+
+          <img src="images/logo museum.jpg"
+               alt="Museum logo"
+               class="rounded"
+               style="width: 50px; height: auto;">
+
+          <span>
+            <strong class="d-block h5 mb-0">THE STATE MUSEUM</strong>
+            <small class="fs-6 text-warning">named after S. Seifullin</small>
+          </span>
+        </a>
+
+        <button class="navbar-toggler"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#navbarNav"
+                aria-controls="navbarNav"
+                aria-expanded="false"
+                aria-label="Toggle navigation"
+                id="navbar-toggler-btn">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+          <ul class="navbar-nav gap-2 text-center text-lg-start">
+            <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+            <li class="nav-item"><a class="nav-link" href="biography.html">Biography</a></li>
+            <li class="nav-item"><a class="nav-link" href="exhibitions.html">Exhibitions</a></li>
+            <li class="nav-item"><a class="nav-link" href="exhibits.html">Collection</a></li>
+            <li class="nav-item"><a class="nav-link" href="gallery.html">Gallery</a></li>
+            <li class="nav-item"><a class="nav-link" href="feedback.html">Visit & Feedback</a></li>
+            <li class="nav-item"><a class="nav-link" href="contacts.html">Contacts</a></li>
+            <li class="nav-item"><a class="nav-link active" href="museum-history.html">Museum history</a></li>
+            <li class="nav-item"><a class="nav-link" href="poetry.html">Poetry Wall</a></li>
+          </ul>
+        </div>
+
+      </div>
+    </nav>
+  </header>
+
+  <section class="hero-banner hero-museum-history position-relative text-white py-5">
+    <div class="hero-content container position-relative z-1 py-md-4">
+      <div class="row">
+        <div class="col-12 col-lg-8 text-center text-md-start">
+
+          <h1 class="hero-title display-5 mb-3">Museum History</h1>
+
+          <p class="hero-subtitle lead mb-4">
+            Discover the rich history, founding milestones, and cultural legacy
+            of the State Museum named after Saken Seifullin.
+          </p>
+
+          <div class="gold-divider mx-auto mx-md-0"></div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <main class="container my-5">
+
+    <div class="row g-5">
+
+      <div class="col-12 col-lg-8">
+
+        <section class="mb-5">
+
+          <h2 class="h3 fw-bold mb-3 text-success border-bottom pb-2">
+            History of the Museum
+          </h2>
+
+          <p class="lead text-muted">
+            The State Museum named after Saken Seifullin was established in
+            1984 in Astana. The museum was created to preserve the memory of
+            the great Kazakh writer, statesman, and public figure Saken
+            Seifullin, introducing his life and work to future generations.
+          </p>
+
+          <p>
+            Over the years, the museum has become an important cultural and
+            educational center, where visitors can learn about the life of
+            S. Seifullin, the history of Kazakhstan, and the development of
+            the national literary heritage.
+          </p>
+
+        </section>
+
+        <section class="mb-5">
+
+          <h2 class="h3 fw-bold mb-3 text-success border-bottom pb-2">
+            Interactive Historical Milestones
+          </h2>
+
+          <p class="text-muted small mb-3">
+            Click on any year to explore key events in the museum's timeline:
+          </p>
+
+          <div class="d-flex flex-wrap gap-2 mb-4" id="timeline-years">
+
+            <button type="button"
+                    class="btn btn-success timeline-year-btn active"
+                    data-year="1984">
+              1984 (Founding)
+            </button>
+
+            <button type="button"
+                    class="btn btn-outline-success timeline-year-btn"
+                    data-year="1998">
+              1998 (Restoration)
+            </button>
+
+            <button type="button"
+                    class="btn btn-outline-success timeline-year-btn"
+                    data-year="2014">
+              2014 (30th Anniversary)
+            </button>
+
+            <button type="button"
+                    class="btn btn-outline-success timeline-year-btn"
+                    data-year="2024">
+              2024 (Modernization)
+            </button>
+
+          </div>
+
+          <div class="card border-0 bg-light p-4 shadow-sm rounded-4 border-start border-4 border-success"
+               id="timeline-card">
+
+            <div class="d-flex justify-content-between align-items-center mb-2">
+
+              <span class="badge bg-success fs-6" id="timeline-badge">
+                1984
+              </span>
+
+              <small class="text-muted fw-bold" id="timeline-subtitle">
+                Official Opening
+              </small>
+
+            </div>
+
+            <h4 class="fw-bold text-dark mb-2" id="timeline-title">
+              Establishment of the State Museum
+            </h4>
+
+            <p class="text-secondary mb-0" id="timeline-desc">
+              On July 9, 1984, the museum officially opened its doors in a
+              historical wooden merchant house built in the late 19th century
+              in Akmolinsk.
+            </p>
+
+          </div>
+
+        </section>
+
+        <section id="opening" class="pt-2">
+
+          <h2 class="h3 fw-bold mb-3 text-success border-bottom pb-2">
+            Building Architecture &amp; Legacy
+          </h2>
+
+          <p class="text-secondary">
+            The museum building itself is an architectural monument of the
+            late 19th century, preserved in its original wooden style with
+            intricate Kazakh decorative elements.
+          </p>
+
+          <div class="alert alert-success border-start border-4 border-warning shadow-sm"
+               role="alert">
+
+            <h5 class="alert-heading fw-bold fs-6">
+              Historical Fact
+            </h5>
+
+            In this historic building, Saken Seifullin once worked in the
+            1920s, making it not only a museum storehouse but an authentic
+            living monument of history.
+
+          </div>
+
+        </section>
+
+      </div>
+
+      <div class="col-12 col-lg-4">
+
+        <h3 class="h5 fw-bold mb-3 text-success">
+          Museum Key Metrics
+        </h3>
+
+        <div class="row g-3">
+
+          <div class="col-6">
+            <div class="card text-center shadow-sm border-0 bg-light p-2">
+              <div class="card-body p-2">
+
+                <p class="display-6 fw-bold mb-0 text-success">
+                  1984
+                </p>
+
+                <p class="small text-muted mb-0 fw-semibold">
+                  Year Founded
+                </p>
+
+              </div>
+            </div>
+          </div>
+
+          <div class="col-6">
+            <div class="card text-center shadow-sm border-0 bg-light p-2">
+              <div class="card-body p-2">
+
+                <p class="display-6 fw-bold mb-0 text-success">
+                  40+
+                </p>
+
+                <p class="small text-muted mb-0 fw-semibold">
+                  Years Active
+                </p>
+
+              </div>
+            </div>
+          </div>
+
+          <div class="col-6">
+            <div class="card text-center shadow-sm border-0 bg-light p-2">
+              <div class="card-body p-2">
+
+                <p class="display-6 fw-bold mb-0 text-success">
+                  7000+
+                </p>
+
+                <p class="small text-muted mb-0 fw-semibold">
+                  Artifacts
+                </p>
+
+              </div>
+            </div>
+          </div>
+
+          <div class="col-6">
+            <div class="card text-center shadow-sm border-0 bg-light p-2">
+              <div class="card-body p-2">
+
+                <p class="display-6 fw-bold mb-0 text-success">
+                  6
+                </p>
+
+                <p class="small text-muted mb-0 fw-semibold">
+                  Exhibition Halls
+                </p>
+
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </main>
+
+  <footer class="bg-brand text-white pt-4 pb-3 mt-auto">
+
+    <div class="container">
+
+      <div class="row gy-3 text-center text-md-start">
+
+        <div class="col-12 col-md-4">
+
+          <strong class="d-block mb-1">
+            Администрация
+          </strong>
+
+          <a href="tel:+77172998042"
+             class="text-white text-decoration-none">
+            ☎ +7 (7172) 99-80-42
+          </a>
+
+        </div>
+
+        <div class="col-12 col-md-4">
+
+          <strong class="d-block mb-1">
+            Музей
+          </strong>
+
+          <a href="tel:+77172986103"
+             class="text-white text-decoration-none">
+            ☎ +7 (7172) 98-61-03
+          </a>
+
+        </div>
+
+        <div class="col-12 col-md-4">
+
+          <strong class="d-block mb-1">
+            Адрес
+          </strong>
+
+          <p class="mb-0">
+            ул. Мухтара Ауэзова, 20
+          </p>
+
+        </div>
+
+      </div>
+
+      <hr class="border-light my-3">
+
+      <div class="text-center text-muted small">
+
+        <p class="mb-0 text-white">
+          &copy; 2026 Saken Seifullin Museum.
+          All rights reserved.
+          <a href="README.md" class="text-warning">
+            Colophon
+          </a>
+        </p>
+
+      </div>
+
+    </div>
+
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+  <!-- jQuery 3.7.1 must load before the custom script. -->
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script src="js/assignment4-jquery.js"></script>
+
+</body>
+</html>

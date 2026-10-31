@@ -1,363 +1,507 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Discover inspirational poetry, verses, and timeless literary masterpieces of Saken Seifullin on the interactive Poetry Wall.">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="css/base.css">
-  <link rel="stylesheet" href="./style1.css">
-  <title>Poetry Wall - Saken Seifullin Museum</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Explore the poetry and literary heritage of Saken Seifullin.">
+
+    <title>World of Poetry — Saken Seifullin Museum</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/site.css">
 </head>
+
 <body class="d-flex flex-column min-vh-100">
 
-  <header class="bg-brand text-white shadow-sm">
-    <nav class="navbar navbar-expand-lg navbar-dark bg-brand py-3" id="main-navbar">
-      <div class="container-fluid">
-        <a class="navbar-brand d-flex align-items-center gap-3 text-wrap" href="index.html" id="brand-link">
-          <img src="logo museum.jpg" alt="Museum logo" class="rounded" style="width: 50px; height: auto;">
-          <span>
-            <strong class="d-block h5 mb-0">THE STATE MUSEUM</strong>
-            <small class="fs-6 text-warning">named after S. Seifullin</small>
-          </span>
-        </a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation" id="navbar-toggler-btn">
-          <span class="navbar-toggler-icon"></span>
-        </button>
+    <header class="bg-brand text-white shadow-sm">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-brand py-3" id="main-navbar">
+            <div class="container-fluid">
 
-        <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
-          <ul class="navbar-nav gap-2 text-center text-lg-start">
-            <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
-            <li class="nav-item"><a class="nav-link" href="biography.html">Biography</a></li>
-            <li class="nav-item"><a class="nav-link" href="exhibitions.html">Exhibitions</a></li>
-            <li class="nav-item"><a class="nav-link" href="exhibits.html">Collection</a></li>
-            <li class="nav-item"><a class="nav-link" href="gallery.html">Gallery</a></li>
-            <li class="nav-item"><a class="nav-link" href="feedback.html">Visit & Feedback</a></li>
-            <li class="nav-item"><a class="nav-link" href="contacts.html">Contacts</a></li>
-            <li class="nav-item"><a class="nav-link" href="Museum history.html">Museum history</a></li>
-            <li class="nav-item"><a class="nav-link active" href="poetry.html">Poetry Wall</a></li>
-          </ul>
-        </div>
-      </div>
-    </nav>
-  </header>
+                <a class="navbar-brand d-flex align-items-center gap-3 text-wrap"
+                   href="index.html" id="brand-link">
+                    <img src="images/logo museum.jpg"
+                         alt="Museum logo"
+                         class="rounded"
+                         style="width: 50px; height: auto;">
+                    <span>
+                        <strong class="d-block h5 mb-0">STATE MUSEUM</strong>
+                        <small class="fs-6 text-warning">Named after S. Seifullin</small>
+                    </span>
+                </a>
 
-  <section class="hero-banner hero-poetry position-relative text-white py-5">
-    <div class="hero-content container position-relative z-1 py-md-4">
-      <div class="row align-items-center">
-        <div class="col-12 col-lg-8 text-center text-md-start mb-3 mb-lg-0">
-          <h1 class="hero-title display-5 mb-3">Poetry Wall</h1>
-          <p class="hero-subtitle lead mb-0">Discover the inspirational poetry, verses, and timeless literary masterpieces of Saken Seifullin.</p>
-          <div class="gold-divider mx-auto mx-md-0 mt-3"></div>
-        </div>
-        <div class="col-12 col-lg-4 text-center text-md-end">
-          <div class="btn-group shadow-sm bg-white p-1 rounded-pill" role="group" aria-label="Language switch">
-            <button type="button" class="btn btn-success btn-sm rounded-pill px-3 active" id="lang-eng">English</button>
-            <button type="button" class="btn btn-outline-success btn-sm rounded-pill px-3 border-0" id="lang-kaz">Қазақша</button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
+                <button class="navbar-toggler" type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#navbarNav"
+                        aria-controls="navbarNav"
+                        aria-expanded="false"
+                        aria-label="Toggle navigation"
+                        id="navbar-toggler-btn">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
 
-  <main class="container my-5">
-    
-    <!-- Фильтры и поиск -->
-    <div class="row g-3 mb-4 align-items-center bg-light p-3 rounded shadow-sm border">
-      <div class="col-12 col-md-6">
-        <input type="text" id="poetry-search" class="form-control" placeholder="🔍 Search poem, phrase, or title...">
-      </div>
-      <div class="col-12 col-md-6 d-flex flex-wrap gap-2 justify-content-md-end" id="poetry-filter-btns">
-        <button class="btn btn-sm btn-success filter-btn active" data-category="all">All</button>
-        <button class="btn btn-sm btn-outline-success filter-btn" data-category="lyric">Lyric Poetry</button>
-        <button class="btn btn-sm btn-outline-success filter-btn" data-category="epic">Epic & Narrative</button>
-        <button class="btn btn-sm btn-outline-success filter-btn" data-category="social">Social & History</button>
-      </div>
-    </div>
+                <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+                    <ul class="navbar-nav gap-2 text-center text-lg-start">
+                        <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+                        <li class="nav-item"><a class="nav-link" href="biography.html">Biography</a></li>
+                        <li class="nav-item"><a class="nav-link" href="exhibitions.html">Exhibitions</a></li>
+                        <li class="nav-item"><a class="nav-link" href="exhibits.html">Collection</a></li>
+                        <li class="nav-item"><a class="nav-link" href="gallery.html">Gallery</a></li>
+                        <li class="nav-item"><a class="nav-link" href="feedback.html">Visit & Reviews</a></li>
+                        <li class="nav-item"><a class="nav-link" href="contacts.html">Contacts</a></li>
+                        <li class="nav-item"><a class="nav-link" href="museum-history.html">Museum History</a></li>
+                        <li class="nav-item"><a class="nav-link active" href="poetry.html">World of Poetry</a></li>
+                    </ul>
+                </div>
 
-    <!-- Галерея стихов -->
-    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4" id="poetry-cards-container">
-
-      <!-- Card 1 -->
-      <div class="col poem-card-col" data-category="lyric">
-        <div class="card h-100 shadow-sm border-0 bg-white poem-modal-trigger" data-bs-toggle="modal" data-bs-target="#poemModal"
-             data-title="Asau tulpar" data-meta="poetry collection, 1922" data-badge="Lyric"
-             data-eng="&quot;Like an untamed steed racing across the vast steppe, our spirit seeks freedom and light.&quot;"
-             data-kaz="&quot;Асау тұлпар арқырап, кең далада шабады, Азаттық пен жарықты рухымыз табады.&quot;"
-             data-desc="This iconic poem reflects Saken Seifullin's rebellious and freedom-loving spirit during the early 1920s Kazakh literary renaissance.">
-          <div class="card-body d-flex flex-column">
-            <span class="display-3 text-warning font-serif lh-1 mb-2">&ldquo;</span>
-            <blockquote class="blockquote mb-0 flex-grow-1">
-              <p class="fst-italic text-secondary poem-text">"Like an untamed steed racing across the vast steppe, our spirit seeks freedom and light."</p>
-            </blockquote>
-          </div>
-          <div class="card-footer bg-light border-top-0 pt-0 pb-3 d-flex justify-content-between align-items-center">
-            <div>
-              <p class="mb-0 fw-bold text-success text-uppercase small poem-title">Asau tulpar</p>
-              <p class="mb-0 small text-muted">poetry collection, 1922</p>
             </div>
-            <span class="badge bg-success-subtle text-success border border-success-subtle rounded-pill small">Lyric</span>
-          </div>
-        </div>
-      </div>
+        </nav>
+    </header>
 
-      <!-- Card 2 -->
-      <div class="col poem-card-col" data-category="lyric">
-        <div class="card h-100 shadow-sm border-0 poetry-quote-box poem-modal-trigger" data-bs-toggle="modal" data-bs-target="#poemModal"
-             data-title="Dombyra" data-meta="poem" data-badge="Lyric"
-             data-eng="&quot;Sing, my dombyra, tell the story of the ancient hills and the hearts that never surrendered.&quot;"
-             data-kaz="&quot;Сайра, домбырам, шертіп өт, Көне қырдың тарихын, Сыр айтсын қайсар халықтың.&quot;"
-             data-desc="Dedicated to the national instrument of Kazakhstan, symbolizing eternal musical tradition and cultural memory.">
-          <div class="card-body d-flex flex-column">
-            <span class="display-3 text-success font-serif lh-1 mb-2">&ldquo;</span>
-            <blockquote class="blockquote mb-0 flex-grow-1">
-              <p class="fst-italic text-dark fw-semibold poem-text">"Sing, my dombyra, tell the story of the ancient hills and the hearts that never surrendered."</p>
-            </blockquote>
-          </div>
-          <div class="card-footer bg-transparent border-top-0 pt-0 pb-3 d-flex justify-content-between align-items-center">
-            <div>
-              <p class="mb-0 fw-bold text-success text-uppercase small poem-title">Dombyra</p>
-              <p class="mb-0 small text-muted">poem</p>
+    <section class="hero-banner hero-poetry position-relative text-white py-5">
+        <div class="hero-content container position-relative z-1 py-md-4">
+            <div class="row align-items-center">
+                <div class="col-12 col-lg-8 text-center text-md-start">
+                    <h1 class="hero-title display-5 mb-3">World of Poetry</h1>
+                    <p class="hero-subtitle lead mb-0">
+                        Discover the poetry and literary heritage of Saken Seifullin.
+                    </p>
+                    <div class="gold-divider mx-auto mx-md-0 mt-3"></div>
+                </div>
             </div>
-            <span class="badge bg-success-subtle text-success border border-success-subtle rounded-pill small">Lyric</span>
-          </div>
         </div>
-      </div>
-
-      <!-- Card 3 -->
-      <div class="col poem-card-col" data-category="social">
-        <div class="card h-100 shadow-sm border-0 bg-white poem-modal-trigger" data-bs-toggle="modal" data-bs-target="#poemModal"
-             data-title="Sovetstan" data-meta="poem" data-badge="Social"
-             data-eng="&quot;A new dawn breaks over the land, bringing hope to every village and strength to every worker.&quot;"
-             data-kaz="&quot;Жаңа таң атты далаға, Үміт сыйлап арманға, Қайрат беріп жандарға.&quot;"
-             data-desc="A motivational social verse celebrating labor, progress, and social transformation in the new epoch.">
-          <div class="card-body d-flex flex-column">
-            <span class="display-3 text-warning font-serif lh-1 mb-2">&ldquo;</span>
-            <blockquote class="blockquote mb-0 flex-grow-1">
-              <p class="fst-italic text-secondary poem-text">"A new dawn breaks over the land, bringing hope to every village and strength to every worker."</p>
-            </blockquote>
-          </div>
-          <div class="card-footer bg-light border-top-0 pt-0 pb-3 d-flex justify-content-between align-items-center">
-            <div>
-              <p class="mb-0 fw-bold text-success text-uppercase small poem-title">Sovetstan</p>
-              <p class="mb-0 small text-muted">poem</p>
-            </div>
-            <span class="badge bg-secondary-subtle text-secondary border rounded-pill small">Social</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- Card 4 -->
-      <div class="col poem-card-col" data-category="social">
-        <div class="card h-100 shadow-sm border-0 bg-white poem-modal-trigger" data-bs-toggle="modal" data-bs-target="#poemModal"
-             data-title="Ekspress" data-meta="poem" data-badge="Social"
-             data-eng="&quot;Rush forward like the express train, carving a path through history without looking back.&quot;"
-             data-kaz="&quot;Экспрессше зулап алға ұмтыл, Тарихтың жолын жарып өтіп.&quot;"
-             data-desc="An energetic allegorical piece comparing human progress and historical momentum to a fast express train.">
-          <div class="card-body d-flex flex-column">
-            <span class="display-3 text-warning font-serif lh-1 mb-2">&ldquo;</span>
-            <blockquote class="blockquote mb-0 flex-grow-1">
-              <p class="fst-italic text-secondary poem-text">"Rush forward like the express train, carving a path through history without looking back."</p>
-            </blockquote>
-          </div>
-          <div class="card-footer bg-light border-top-0 pt-0 pb-3 d-flex justify-content-between align-items-center">
-            <div>
-              <p class="mb-0 fw-bold text-success text-uppercase small poem-title">Ekspress</p>
-              <p class="mb-0 small text-muted">poem</p>
-            </div>
-            <span class="badge bg-secondary-subtle text-secondary border rounded-pill small">Social</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- Card 5 -->
-      <div class="col poem-card-col" data-category="epic">
-        <div class="card h-100 shadow-sm border-0 poetry-quote-box poem-modal-trigger" data-bs-toggle="modal" data-bs-target="#poemModal"
-             data-title="Kokshetau" data-meta="narrative poem" data-badge="Epic"
-             data-eng="&quot;Majestic peaks of Kokshetau, wrapped in blue mist, guarding the secrets of our ancestors.&quot;"
-             data-kaz="&quot;Арқаның сұлу Көкшесі, Көк мұнарға оранған, Бабалар сырын сақтаған.&quot;"
-             data-desc="One of Saken Seifullin's most famous epic masterpieces depicting the majestic nature and folk legends of Kokshetau.">
-          <div class="card-body d-flex flex-column">
-            <span class="display-3 text-success font-serif lh-1 mb-2">&ldquo;</span>
-            <blockquote class="blockquote mb-0 flex-grow-1">
-              <p class="fst-italic text-dark fw-semibold poem-text">"Majestic peaks of Kokshetau, wrapped in blue mist, guarding the secrets of our ancestors."</p>
-            </blockquote>
-          </div>
-          <div class="card-footer bg-transparent border-top-0 pt-0 pb-3 d-flex justify-content-between align-items-center">
-            <div>
-              <p class="mb-0 fw-bold text-success text-uppercase small poem-title">Kokshetau</p>
-              <p class="mb-0 small text-muted">narrative poem</p>
-            </div>
-            <span class="badge bg-warning-subtle text-warning-emphasis border rounded-pill small">Epic</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- Card 6 -->
-      <div class="col poem-card-col" data-category="social">
-        <div class="card h-100 shadow-sm border-0 bg-white poem-modal-trigger" data-bs-toggle="modal" data-bs-target="#poemModal"
-             data-title="Tar zhol, taighaq keshu" data-meta="novel, 1927" data-badge="Social"
-             data-eng="&quot;Through narrow paths and slippery crossings, truth remains the only unyielding guide.&quot;"
-             data-kaz="&quot;Тар жол, тайғақ кешуде, Шындық болды жолбасшы.&quot;"
-             data-desc="Autobiographical historical novel chronicling the revolutionary struggles and statehood formation period of Kazakhstan.">
-          <div class="card-body d-flex flex-column">
-            <span class="display-3 text-warning font-serif lh-1 mb-2">&ldquo;</span>
-            <blockquote class="blockquote mb-0 flex-grow-1">
-              <p class="fst-italic text-secondary poem-text">"Through narrow paths and slippery crossings, truth remains the only unyielding guide."</p>
-            </blockquote>
-          </div>
-          <div class="card-footer bg-light border-top-0 pt-0 pb-3 d-flex justify-content-between align-items-center">
-            <div>
-              <p class="mb-0 fw-bold text-success text-uppercase small poem-title">Tar zhol, taighaq keshu</p>
-              <p class="mb-0 small text-muted">novel, 1927</p>
-            </div>
-            <span class="badge bg-secondary-subtle text-secondary border rounded-pill small">Social</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- Card 7 -->
-      <div class="col poem-card-col" data-category="lyric">
-        <div class="card h-100 shadow-sm border-0 bg-white poem-modal-trigger" data-bs-toggle="modal" data-bs-target="#poemModal"
-             data-title="Syr sandyq" data-meta="poetry collection" data-badge="Lyric"
-             data-eng="&quot;Keep your thoughts as pure as a secret chest, opened only to those who value honor.&quot;"
-             data-kaz="&quot;Сыр сандықты ашып қара, Адал досың болса егер.&quot;"
-             data-desc="A profound lyrical poem exploring true friendship, spiritual purity, and human trust.">
-          <div class="card-body d-flex flex-column">
-            <span class="display-3 text-warning font-serif lh-1 mb-2">&ldquo;</span>
-            <blockquote class="blockquote mb-0 flex-grow-1">
-              <p class="fst-italic text-secondary poem-text">"Keep your thoughts as pure as a secret chest, opened only to those who value honor."</p>
-            </blockquote>
-          </div>
-          <div class="card-footer bg-light border-top-0 pt-0 pb-3 d-flex justify-content-between align-items-center">
-            <div>
-              <p class="mb-0 fw-bold text-success text-uppercase small poem-title">Syr sandyq</p>
-              <p class="mb-0 small text-muted">poetry collection</p>
-            </div>
-            <span class="badge bg-success-subtle text-success border border-success-subtle rounded-pill small">Lyric</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- Card 8 -->
-      <div class="col poem-card-col" data-category="epic">
-        <div class="card h-100 shadow-sm border-0 poetry-quote-box poem-modal-trigger" data-bs-toggle="modal" data-bs-target="#poemModal"
-             data-title="Albatros" data-meta="poem" data-badge="Epic"
-             data-eng="&quot;Soaring high above the turbulent waves, the albatross fears no storm.&quot;"
-             data-kaz="&quot;Дауылдан қорықпас Альбатрос, Толқындардан шырқау биікте.&quot;"
-             data-desc="An inspiring poem presenting the albatross bird as a symbol of courage and resistance against life's harsh storms.">
-          <div class="card-body d-flex flex-column">
-            <span class="display-3 text-success font-serif lh-1 mb-2">&ldquo;</span>
-            <blockquote class="blockquote mb-0 flex-grow-1">
-              <p class="fst-italic text-dark fw-semibold poem-text">"Soaring high above the turbulent waves, the albatross fears no storm."</p>
-            </blockquote>
-          </div>
-          <div class="card-footer bg-transparent border-top-0 pt-0 pb-3 d-flex justify-content-between align-items-center">
-            <div>
-              <p class="mb-0 fw-bold text-success text-uppercase small poem-title">Albatros</p>
-              <p class="mb-0 small text-muted">poem</p>
-            </div>
-            <span class="badge bg-warning-subtle text-warning-emphasis border rounded-pill small">Epic</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- Card 9 -->
-      <div class="col poem-card-col" data-category="epic">
-        <div class="card h-100 shadow-sm border-0 bg-white poem-modal-trigger" data-bs-toggle="modal" data-bs-target="#poemModal"
-             data-title="Aqqudyn airylui" data-meta="narrative poem" data-badge="Epic"
-             data-eng="&quot;The sad cry of the white swan echoes over the quiet lake, leaving a memory that time cannot erase.&quot;"
-             data-kaz="&quot;Аққудың мұңды үні қалды көлде, Уақыт өшпес естелік болып.&quot;"
-             data-desc="A tragic and lyrical masterpiece describing love, loss, and nature's untouched elegance.">
-          <div class="card-body d-flex flex-column">
-            <span class="display-3 text-warning font-serif lh-1 mb-2">&ldquo;</span>
-            <blockquote class="blockquote mb-0 flex-grow-1">
-              <p class="fst-italic text-secondary poem-text">"The sad cry of the white swan echoes over the quiet lake, leaving a memory that time cannot erase."</p>
-            </blockquote>
-          </div>
-          <div class="card-footer bg-light border-top-0 pt-0 pb-3 d-flex justify-content-between align-items-center">
-            <div>
-              <p class="mb-0 fw-bold text-success text-uppercase small poem-title">Aqqudyn airylui</p>
-              <p class="mb-0 small text-muted">narrative poem</p>
-            </div>
-            <span class="badge bg-warning-subtle text-warning-emphasis border rounded-pill small">Epic</span>
-          </div>
-        </div>
-      </div>
-
-    </div>
-
-    <section class="text-center my-5 py-4 border-top border-bottom bg-light rounded">
-      <p class="fst-italic col-12 col-md-8 mx-auto text-muted mb-3">
-        All texts are displayed for educational purposes as part of the museum's literary collection. Visit the Collection page to see original manuscripts and historical editions.
-      </p>
-      <a href="exhibits.html" class="btn btn-success btn-sm px-4 py-2">Visit the Collection</a>
     </section>
-  </main>
 
-  <!-- Интерактивное модальное окно для стихов -->
-  <div class="modal fade" id="poemModal" tabindex="-1" aria-labelledby="poemModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-lg">
-      <div class="modal-content border-0 shadow-lg">
-        <div class="modal-header bg-success text-white">
-          <div>
-            <h5 class="modal-title fw-bold" id="poemModalLabel">Poem Details</h5>
-            <small class="text-light opacity-75" id="modal-poem-meta"></small>
-          </div>
-          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+    <main class="container my-5">
+
+        <div class="row g-3 mb-4 align-items-center bg-light p-3 rounded shadow-sm border">
+            <div class="col-12 col-md-6">
+                <input type="text"
+                       id="poetry-search"
+                       class="form-control"
+                       placeholder="🔍 Search poems by title or keywords..."
+                       aria-label="Search poems">
+            </div>
+
+            <div class="col-12 col-md-6 d-flex flex-wrap gap-2 justify-content-md-end"
+                 id="poetry-filter-btns">
+
+                <button type="button" class="btn btn-sm btn-success filter-btn active"
+                        data-category="all">All</button>
+
+                <button type="button" class="btn btn-sm btn-outline-success filter-btn"
+                        data-category="lyric">Lyric Poetry</button>
+
+                <button type="button" class="btn btn-sm btn-outline-success filter-btn"
+                        data-category="epic">Epic Poems</button>
+
+                <button type="button" class="btn btn-sm btn-outline-success filter-btn"
+                        data-category="social">Society &amp; History</button>
+            </div>
         </div>
-        <div class="modal-body p-4">
-          <div class="d-flex justify-content-between align-items-center mb-3">
-            <span class="badge bg-success" id="modal-poem-badge">Category</span>
-            <button class="btn btn-outline-success btn-sm rounded-pill" id="modal-audio-btn">🔊 Listen Verse</button>
-          </div>
 
-          <div class="p-3 bg-light rounded border mb-3">
-            <p class="fs-5 fst-italic text-dark mb-0" id="modal-poem-quote"></p>
-          </div>
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4"
+             id="poetry-cards-container">
 
-          <div class="mb-3">
-            <h6 class="fw-bold text-success">Original (Kazakh):</h6>
-            <p class="text-muted fst-italic mb-0" id="modal-poem-kaz"></p>
-          </div>
+            <!-- CARD 1 -->
+            <div class="col poem-card-col" data-category="lyric">
+                <div class="card h-100 shadow-sm border-0 bg-white poem-modal-trigger"
+                     data-bs-toggle="modal"
+                     data-bs-target="#poemModal"
+                     data-title="Asau Tulpar (Wild Horse)"
+                     data-meta="Poetry collection, 1922"
+                     data-badge="Lyric Poetry"
+                     data-kaz="The wild horse gallops across the open steppe, seeking freedom and the light of a new day."
+                     data-desc="This work represents the desire for freedom, independence, and the determined spirit of the poet.">
 
-          <div class="mb-3">
-            <h6 class="fw-bold text-success">Literary Analysis &amp; Context:</h6>
-            <p class="text-secondary small mb-0" id="modal-poem-desc"></p>
-          </div>
+                    <div class="card-body d-flex flex-column">
+                        <span class="display-3 text-warning font-serif lh-1 mb-2">&ldquo;</span>
+                        <blockquote class="blockquote mb-0 flex-grow-1">
+                            <p class="fst-italic text-secondary poem-text">
+                                The wild horse gallops across the open steppe, seeking freedom and the light of a new day.
+                            </p>
+                        </blockquote>
+                    </div>
+
+                    <div class="card-footer bg-light border-top-0 pt-0 pb-3 d-flex justify-content-between align-items-center">
+                        <div>
+                            <p class="mb-0 fw-bold text-success text-uppercase small poem-title">Asau Tulpar</p>
+                            <p class="mb-0 small text-muted">Poetry collection, 1922</p>
+                        </div>
+                        <span class="badge bg-success-subtle text-success border border-success-subtle rounded-pill small">Lyric Poetry</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CARD 2 -->
+            <div class="col poem-card-col" data-category="lyric">
+                <div class="card h-100 shadow-sm border-0 poetry-quote-box poem-modal-trigger"
+                     data-bs-toggle="modal"
+                     data-bs-target="#poemModal"
+                     data-title="Dombyra"
+                     data-meta="Poem"
+                     data-badge="Lyric Poetry"
+                     data-kaz="Play, my dombyra, and tell the ancient stories of the steppe and the brave spirit of our people."
+                     data-desc="The poem celebrates the dombyra as a symbol of Kazakh music, cultural identity, and historical memory.">
+
+                    <div class="card-body d-flex flex-column">
+                        <span class="display-3 text-success font-serif lh-1 mb-2">&ldquo;</span>
+                        <blockquote class="blockquote mb-0 flex-grow-1">
+                            <p class="fst-italic text-dark fw-semibold poem-text">
+                                Play, my dombyra, and tell the ancient stories of the steppe and the brave spirit of our people.
+                            </p>
+                        </blockquote>
+                    </div>
+
+                    <div class="card-footer bg-transparent border-top-0 pt-0 pb-3 d-flex justify-content-between align-items-center">
+                        <div>
+                            <p class="mb-0 fw-bold text-success text-uppercase small poem-title">Dombyra</p>
+                            <p class="mb-0 small text-muted">Poem</p>
+                        </div>
+                        <span class="badge bg-success-subtle text-success border border-success-subtle rounded-pill small">Lyric Poetry</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CARD 3 -->
+            <div class="col poem-card-col" data-category="social">
+                <div class="card h-100 shadow-sm border-0 bg-white poem-modal-trigger"
+                     data-bs-toggle="modal"
+                     data-bs-target="#poemModal"
+                     data-title="Sovetstan"
+                     data-meta="Poem"
+                     data-badge="Social Poetry"
+                     data-kaz="A new dawn rises over the steppe, bringing hope, dreams, and strength to the people."
+                     data-desc="This poem explores social transformation, collective effort, and the ideas of a changing historical period.">
+
+                    <div class="card-body d-flex flex-column">
+                        <span class="display-3 text-warning font-serif lh-1 mb-2">&ldquo;</span>
+                        <blockquote class="blockquote mb-0 flex-grow-1">
+                            <p class="fst-italic text-secondary poem-text">
+                                A new dawn rises over the steppe, bringing hope, dreams, and strength to the people.
+                            </p>
+                        </blockquote>
+                    </div>
+
+                    <div class="card-footer bg-light border-top-0 pt-0 pb-3 d-flex justify-content-between align-items-center">
+                        <div>
+                            <p class="mb-0 fw-bold text-success text-uppercase small poem-title">Sovetstan</p>
+                            <p class="mb-0 small text-muted">Poem</p>
+                        </div>
+                        <span class="badge bg-secondary-subtle text-secondary border rounded-pill small">Social Poetry</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CARD 4 -->
+            <div class="col poem-card-col" data-category="social">
+                <div class="card h-100 shadow-sm border-0 bg-white poem-modal-trigger"
+                     data-bs-toggle="modal"
+                     data-bs-target="#poemModal"
+                     data-title="Express"
+                     data-meta="Poem"
+                     data-badge="Social Poetry"
+                     data-kaz="Like an express train, we move forward, crossing the paths of history toward a new future."
+                     data-desc="The express train symbolizes progress, determination, and the rapid movement of historical change.">
+
+                    <div class="card-body d-flex flex-column">
+                        <span class="display-3 text-warning font-serif lh-1 mb-2">&ldquo;</span>
+                        <blockquote class="blockquote mb-0 flex-grow-1">
+                            <p class="fst-italic text-secondary poem-text">
+                                Like an express train, we move forward, crossing the paths of history toward a new future.
+                            </p>
+                        </blockquote>
+                    </div>
+
+                    <div class="card-footer bg-light border-top-0 pt-0 pb-3 d-flex justify-content-between align-items-center">
+                        <div>
+                            <p class="mb-0 fw-bold text-success text-uppercase small poem-title">Express</p>
+                            <p class="mb-0 small text-muted">Poem</p>
+                        </div>
+                        <span class="badge bg-secondary-subtle text-secondary border rounded-pill small">Social Poetry</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CARD 5 -->
+            <div class="col poem-card-col" data-category="epic">
+                <div class="card h-100 shadow-sm border-0 poetry-quote-box poem-modal-trigger"
+                     data-bs-toggle="modal"
+                     data-bs-target="#poemModal"
+                     data-title="Kokshetau"
+                     data-meta="Epic poem"
+                     data-badge="Epic Poetry"
+                     data-kaz="Beautiful Kokshetau rises beneath the blue mist, preserving the stories and memories of our ancestors."
+                     data-desc="Kokshetau is a well-known work that describes the beauty of nature, local legends, and the cultural heritage of Kazakhstan.">
+
+                    <div class="card-body d-flex flex-column">
+                        <span class="display-3 text-success font-serif lh-1 mb-2">&ldquo;</span>
+                        <blockquote class="blockquote mb-0 flex-grow-1">
+                            <p class="fst-italic text-dark fw-semibold poem-text">
+                                Beautiful Kokshetau rises beneath the blue mist, preserving the stories and memories of our ancestors.
+                            </p>
+                        </blockquote>
+                    </div>
+
+                    <div class="card-footer bg-transparent border-top-0 pt-0 pb-3 d-flex justify-content-between align-items-center">
+                        <div>
+                            <p class="mb-0 fw-bold text-success text-uppercase small poem-title">Kokshetau</p>
+                            <p class="mb-0 small text-muted">Epic poem</p>
+                        </div>
+                        <span class="badge bg-warning-subtle text-warning-emphasis border rounded-pill small">Epic Poetry</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CARD 6 -->
+            <div class="col poem-card-col" data-category="social">
+                <div class="card h-100 shadow-sm border-0 bg-white poem-modal-trigger"
+                     data-bs-toggle="modal"
+                     data-bs-target="#poemModal"
+                     data-title="The Thorny Path"
+                     data-meta="Novel, 1927"
+                     data-badge="Historical Literature"
+                     data-kaz="Through a difficult and uncertain journey, truth becomes the guiding light."
+                     data-desc="The Thorny Path is an autobiographical historical novel describing important events and political changes in Kazakhstan.">
+
+                    <div class="card-body d-flex flex-column">
+                        <span class="display-3 text-warning font-serif lh-1 mb-2">&ldquo;</span>
+                        <blockquote class="blockquote mb-0 flex-grow-1">
+                            <p class="fst-italic text-secondary poem-text">
+                                Through a difficult and uncertain journey, truth becomes the guiding light.
+                            </p>
+                        </blockquote>
+                    </div>
+
+                    <div class="card-footer bg-light border-top-0 pt-0 pb-3 d-flex justify-content-between align-items-center">
+                        <div>
+                            <p class="mb-0 fw-bold text-success text-uppercase small poem-title">The Thorny Path</p>
+                            <p class="mb-0 small text-muted">Novel, 1927</p>
+                        </div>
+                        <span class="badge bg-secondary-subtle text-secondary border rounded-pill small">Historical</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CARD 7 -->
+            <div class="col poem-card-col" data-category="lyric">
+                <div class="card h-100 shadow-sm border-0 bg-white poem-modal-trigger"
+                     data-bs-toggle="modal"
+                     data-bs-target="#poemModal"
+                     data-title="Syr Sandyk (The Secret Chest)"
+                     data-meta="Poem"
+                     data-badge="Lyric Poetry"
+                     data-kaz="Open the secret chest of your heart and share its treasures with a true and loyal friend."
+                     data-desc="This lyrical work explores friendship, honesty, trust, and the importance of sincere human relationships.">
+
+                    <div class="card-body d-flex flex-column">
+                        <span class="display-3 text-warning font-serif lh-1 mb-2">&ldquo;</span>
+                        <blockquote class="blockquote mb-0 flex-grow-1">
+                            <p class="fst-italic text-secondary poem-text">
+                                Open the secret chest of your heart and share its treasures with a true and loyal friend.
+                            </p>
+                        </blockquote>
+                    </div>
+
+                    <div class="card-footer bg-light border-top-0 pt-0 pb-3 d-flex justify-content-between align-items-center">
+                        <div>
+                            <p class="mb-0 fw-bold text-success text-uppercase small poem-title">Syr Sandyk</p>
+                            <p class="mb-0 small text-muted">Poem</p>
+                        </div>
+                        <span class="badge bg-success-subtle text-success border border-success-subtle rounded-pill small">Lyric Poetry</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CARD 8 -->
+            <div class="col poem-card-col" data-category="epic">
+                <div class="card h-100 shadow-sm border-0 poetry-quote-box poem-modal-trigger"
+                     data-bs-toggle="modal"
+                     data-bs-target="#poemModal"
+                     data-title="Albatross"
+                     data-meta="Poem"
+                     data-badge="Epic Poetry"
+                     data-kaz="The fearless albatross rises above the waves, flying high through the storm."
+                     data-desc="The image of the albatross represents courage, strength, determination, and the ability to overcome difficulties.">
+
+                    <div class="card-body d-flex flex-column">
+                        <span class="display-3 text-success font-serif lh-1 mb-2">&ldquo;</span>
+                        <blockquote class="blockquote mb-0 flex-grow-1">
+                            <p class="fst-italic text-dark fw-semibold poem-text">
+                                The fearless albatross rises above the waves, flying high through the storm.
+                            </p>
+                        </blockquote>
+                    </div>
+
+                    <div class="card-footer bg-transparent border-top-0 pt-0 pb-3 d-flex justify-content-between align-items-center">
+                        <div>
+                            <p class="mb-0 fw-bold text-success text-uppercase small poem-title">Albatross</p>
+                            <p class="mb-0 small text-muted">Poem</p>
+                        </div>
+                        <span class="badge bg-warning-subtle text-warning-emphasis border rounded-pill small">Epic Poetry</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CARD 9 -->
+            <div class="col poem-card-col" data-category="epic">
+                <div class="card h-100 shadow-sm border-0 bg-white poem-modal-trigger"
+                     data-bs-toggle="modal"
+                     data-bs-target="#poemModal"
+                     data-title="The Separation of the Swans"
+                     data-meta="Epic poem"
+                     data-badge="Epic Poetry"
+                     data-kaz="The sorrowful song of the swan remains over the lake, becoming a memory that time cannot erase."
+                     data-desc="This emotional work explores love, nature, separation, and the sadness of losing someone important.">
+
+                    <div class="card-body d-flex flex-column">
+                        <span class="display-3 text-warning font-serif lh-1 mb-2">&ldquo;</span>
+                        <blockquote class="blockquote mb-0 flex-grow-1">
+                            <p class="fst-italic text-secondary poem-text">
+                                The sorrowful song of the swan remains over the lake, becoming a memory that time cannot erase.
+                            </p>
+                        </blockquote>
+                    </div>
+
+                    <div class="card-footer bg-light border-top-0 pt-0 pb-3 d-flex justify-content-between align-items-center">
+                        <div>
+                            <p class="mb-0 fw-bold text-success text-uppercase small poem-title">The Separation of the Swans</p>
+                            <p class="mb-0 small text-muted">Epic poem</p>
+                        </div>
+                        <span class="badge bg-warning-subtle text-warning-emphasis border rounded-pill small">Epic Poetry</span>
+                    </div>
+                </div>
+            </div>
+
         </div>
-        <div class="modal-footer bg-light">
-          <button type="button" class="btn btn-outline-success btn-sm" id="modal-copy-btn">📋 Copy Verse</button>
-          <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Close</button>
+
+        <section class="text-center my-5 py-4 border-top border-bottom bg-light rounded">
+            <p class="fst-italic col-12 col-md-8 mx-auto text-muted mb-3">
+                The texts on this page are provided for educational purposes.
+                You can explore original manuscripts and historical publications
+                in the Collection section.
+            </p>
+
+            <a href="exhibits.html" class="btn btn-success btn-sm px-4 py-2">
+                Explore Collection
+            </a>
+        </section>
+
+    </main>
+
+    <div class="modal fade"
+         id="poemModal"
+         tabindex="-1"
+         aria-labelledby="poemModalLabel"
+         aria-hidden="true">
+
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content border-0 shadow-lg">
+
+                <div class="modal-header bg-success text-white">
+                    <div>
+                        <h5 class="modal-title fw-bold" id="poemModalLabel">
+                            About the Work
+                        </h5>
+                        <small class="text-light opacity-75" id="modal-poem-meta"></small>
+                    </div>
+
+                    <button type="button"
+                            class="btn-close btn-close-white"
+                            data-bs-dismiss="modal"
+                            aria-label="Close"></button>
+                </div>
+
+                <div class="modal-body p-4">
+
+                    <div class="mb-3">
+                        <span class="badge bg-success" id="modal-poem-badge">
+                            Category
+                        </span>
+                    </div>
+
+                    <div class="p-3 bg-light rounded border mb-3">
+                        <p class="fs-5 fst-italic text-dark mb-0"
+                           id="modal-poem-quote"></p>
+                    </div>
+
+                    <div class="mb-3">
+                        <h6 class="fw-bold text-success">
+                            About This Work:
+                        </h6>
+                        <p class="text-secondary small mb-0"
+                           id="modal-poem-desc"></p>
+                    </div>
+
+                </div>
+
+                <div class="modal-footer bg-light">
+                    <button type="button"
+                            class="btn btn-outline-success btn-sm"
+                            id="modal-copy-btn">
+                        📋 Copy Text
+                    </button>
+
+                    <button type="button"
+                            class="btn btn-secondary btn-sm"
+                            data-bs-dismiss="modal">
+                        Close
+                    </button>
+                </div>
+
+            </div>
         </div>
-      </div>
     </div>
-  </div>
 
-  <footer class="bg-brand text-white pt-4 pb-3 mt-auto">
-    <div class="container">
-      <div class="row gy-3 text-center text-md-start">
-        <div class="col-12 col-md-4">
-          <strong class="d-block mb-1">Администрация</strong>
-          <a href="tel:+77172998042" class="text-white text-decoration-none">☎ +7 (7172) 99-80-42</a>
-        </div>
-        <div class="col-12 col-md-4">
-          <strong class="d-block mb-1">Музей</strong>
-          <a href="tel:+77172986103" class="text-white text-decoration-none">☎ +7 (7172) 98-61-03</a>
-        </div>
-        <div class="col-12 col-md-4">
-          <strong class="d-block mb-1">Адрес</strong>
-          <p class="mb-0">ул. Мухтара Ауэзова, 20</p>
-        </div>
-      </div>
-      <hr class="border-light my-3">
-      <div class="text-center text-muted small">
-        <p class="mb-0 text-white">&copy; 2026 Saken Seifullin Museum. All rights reserved. <a href="colophon.html" class="text-warning">Colophon</a></p>
-      </div>
-    </div>
-  </footer>
+    <footer class="bg-brand text-white pt-4 pb-3 mt-auto">
+        <div class="container">
+            <div class="row gy-3 text-center text-md-start">
 
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="js/script.js" defer></script>
+                <div class="col-12 col-md-4">
+                    <strong class="d-block mb-1">Administration</strong>
+                    <a href="tel:+77172998042"
+                       class="text-white text-decoration-none">
+                        ☎ +7 (7172) 99-80-42
+                    </a>
+                </div>
+
+                <div class="col-12 col-md-4">
+                    <strong class="d-block mb-1">Museum</strong>
+                    <a href="tel:+77172986103"
+                       class="text-white text-decoration-none">
+                        ☎ +7 (7172) 98-61-03
+                    </a>
+                </div>
+
+                <div class="col-12 col-md-4">
+                    <strong class="d-block mb-1">Address</strong>
+                    <p class="mb-0">
+                        20 Mukhtar Auezov Street, Astana
+                    </p>
+                </div>
+
+            </div>
+
+            <hr class="border-light my-3">
+
+            <div class="text-center small">
+                <p class="mb-0 text-white">
+                    &copy; 2026 Saken Seifullin Museum.
+                    All rights reserved.
+                    <a href="README.md" class="text-warning">
+                        About the Website
+                    </a>
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- jQuery 3.7.1 must load before the custom script. -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="js/assignment4-jquery.js"></script>
+
 </body>
 </html>

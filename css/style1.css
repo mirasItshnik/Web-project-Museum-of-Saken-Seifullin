@@ -448,9 +448,9 @@ body {
 }
 
 
-.hero-home        { background-image: url('astana-16-1.jpg'); }
-.hero-bio         { background-image: url('Saken s suit.png'); }
-.hero-exhibitions { background-image: url('Museum inner view.jpeg'); }
+.hero-home        { background-image: url('../images/astana-16-1.jpg'); }
+.hero-bio         { background-image: url('../images/Saken s suit.png'); }
+.hero-exhibitions { background-image: url('../images/Museum inner view.jpeg'); }
 
 .hero-content {
   position: relative;
@@ -762,9 +762,9 @@ h1, h2, h3, h4 {
 }
 
 /* One background photo per page (replaces the old inline style attributes). */
-.hero-home { background-image: url("astana-16-1.jpg"); }
-.hero-bio { background-image: url("Saken s suit.png"); }
-.hero-exhibitions { background-image: url("Museum inner view.jpeg"); }
+.hero-home { background-image: url("../images/astana-16-1.jpg"); }
+.hero-bio { background-image: url("../images/Saken s suit.png"); }
+.hero-exhibitions { background-image: url("../images/Museum inner view.jpeg"); }
 
 .gold-divider {
   width: 60px;

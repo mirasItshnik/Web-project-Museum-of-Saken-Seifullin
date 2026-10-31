@@ -1,48 +1,44 @@
-/* ==========================================================================
-   main.js — Saken Seifullin Museum (Collection, Gallery & Visit/Feedback)
-   ========================================================================== */
-(() => {
+// jQuery 3.7.1 подключён через CDN.
+// Запускаю код после загрузки HTML.
+
+$(function () {
   'use strict';
 
-  // Вспомогательные селекторы
-  const $ = (selector, root = document) => root.querySelector(selector);
-  const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
-  const pad = n => String(n).padStart(2, '0');
-  const fmt = n => `${n.toLocaleString('en-US')} ₸`;
-  const localISO = d => `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
+  const twoDigits = n => String(n).padStart(2, '0');
 
-  const el = (tag, className = '', text = '') => {
-    const node = document.createElement(tag);
-    if (className) node.className = className;
-    if (text) node.textContent = text;
-    return node;
-  };
+  const formatPrice = n => `${n.toLocaleString('en-US')} ₸`;
 
-  const store = {
-    get(key, fallback) {
-      try { return JSON.parse(localStorage.getItem(`museum:${key}`)) ?? fallback; } catch { return fallback; }
-    },
-    set(key, value) {
-      try { localStorage.setItem(`museum:${key}`, JSON.stringify(value)); } catch { /* ignore */ }
-    }
-  };
-
-  function setActive(buttons, active) {
-    buttons.forEach(btn => {
-      const on = btn === active;
-      btn.classList.toggle('btn-success', on);
-      btn.classList.toggle('btn-outline-success', !on);
-      btn.classList.toggle('active', on);
-    });
+  function todayISO(date) {
+    return `${date.getFullYear()}-${twoDigits(date.getMonth() + 1)}-${twoDigits(date.getDate())}`;
   }
 
-  function check(input, ok, message) {
-    if (!input) return ok;
-    input.classList.toggle('is-invalid', !ok);
-    input.classList.toggle('is-valid', ok && input.value.trim() !== '');
-    const feedback = input.parentElement?.querySelector('.invalid-feedback');
-    if (!ok && feedback && message) feedback.textContent = message;
+  function setText(fields) {
+    $.each(fields, (selector, text) => $(selector).text(text));
+  }
+
+  function showModal(selector) {
+    const $modal = $(selector);
+    if ($modal.length && window.bootstrap) bootstrap.Modal.getOrCreateInstance($modal[0]).show();
+  }
+
+  function setFieldState($input, ok, message) {
+    if (!$input.length) return ok;
+    $input.toggleClass('is-invalid', !ok).toggleClass('is-valid', ok && String($input.val() || '').trim() !== '');
+    const $feedback = $input.parent().find('.invalid-feedback');
+    if (!ok && $feedback.length && message) $feedback.text(message);
     return ok;
+  }
+
+  function showToast(message) {
+    let $toast = $('#custom-toast');
+    if (!$toast.length) {
+      $toast = $('<div>', { id: 'custom-toast', class: 'museum-toast', role: 'status' });
+      $('body').append($toast);
+    }
+    $toast.text(message).addClass('show');
+    clearTimeout($toast.data('timer'));
+    const timer = setTimeout(() => $toast.removeClass('show'), 2800);
+    $toast.data('timer', timer);
   }
 
   const DAYS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
@@ -52,680 +48,463 @@
     const today = HOURS[now.getDay()];
     const hour = now.getHours();
     if (today && hour >= today[0] && hour < today[1]) {
-      return { cls: 'bg-success', text: `🟢 Open now (until ${pad(today[1])}:00)` };
+      return { cls: 'bg-success', text: `🟢 Open now (until ${twoDigits(today[1])}:00)` };
     }
     if (today && hour < today[0]) {
-      return { cls: 'bg-warning text-dark', text: `🟡 Closed now (opens at ${pad(today[0])}:00)` };
+      return { cls: 'bg-warning text-dark', text: `🟡 Closed now (opens at ${twoDigits(today[0])}:00)` };
     }
     for (let i = 1; i <= 7; i++) {
       const day = (now.getDay() + i) % 7;
       if (HOURS[day]) {
         const when = i === 1 ? 'tomorrow' : DAYS[day];
-        return { cls: 'bg-danger', text: `🔴 Closed${today ? '' : ' (day off)'}, opens ${when} at ${pad(HOURS[day][0])}:00` };
+        return { cls: 'bg-danger', text: `🔴 Closed${today ? '' : ' (day off)'}, opens ${when} at ${twoDigits(HOURS[day][0])}:00` };
       }
     }
   }
 
-  /* ==========================================================================
-     1. Глобальный UI (Toast, Scroll, Размер текста)
-     ========================================================================== */
-  function showToast(message) {
-    let toast = $('#custom-toast');
-    if (!toast) {
-      toast = el('div', 'museum-toast');
-      toast.id = 'custom-toast';
-      toast.setAttribute('role', 'status');
-      document.body.append(toast);
+  function initContacts() {
+    const $badge = $('#museum-status-badge');
+    if ($badge.length) {
+      const status = museumStatus();
+      $badge.attr('class', `badge ${status.cls} px-3 py-2 fs-6 text-wrap`).text(status.text);
     }
-    toast.textContent = message;
-    toast.classList.add('show');
-    clearTimeout(toast.timer);
-    toast.timer = setTimeout(() => toast.classList.remove('show'), 2800);
-  }
-  window.showToast = showToast;
-
-  function initTextSize() {
-    let size = store.get('font', 100);
-    const apply = () => { document.documentElement.style.fontSize = `${size}%`; };
-    
-    $('#btn-font-decrease')?.addEventListener('click', () => {
-      size = Math.max(87.5, size - 12.5);
-      store.set('font', size);
-      apply();
-      showToast(`Text size: ${Math.round(size)}%`);
-    });
-    $('#btn-font-increase')?.addEventListener('click', () => {
-      size = Math.min(125, size + 12.5);
-      store.set('font', size);
-      apply();
-      showToast(`Text size: ${Math.round(size)}%`);
-    });
-    $('#btn-font-reset')?.addEventListener('click', () => {
-      size = 100;
-      store.set('font', size);
-      apply();
-      showToast('Text size: 100%');
-    });
-    apply();
   }
 
-  function initScrollUI() {
-    const topBtn = $('#scrollTopBtn');
-    if (!topBtn) return;
-
-    window.addEventListener('scroll', () => {
-      topBtn.classList.toggle('show', window.scrollY > 300);
-    }, { passive: true });
-
-    topBtn.addEventListener('click', () => {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    });
-  }
-
-  /* ==========================================================================
-     2. Страница Коллекции (exhibits.html)
-     ========================================================================== */
+  // Коллекция: .on() и .find() заменяют addEventListener и querySelector.
+  // Делегирование убирает отдельные обработчики карточек, код получается короче.
   function initCollection() {
-    const root = $('#exhibits-main-content');
-    if (!root) return;
+    const $root = $('#exhibits-main-content');
+    if (!$root.length) return;
 
-    const tbody = $('tbody', root);
-    const grid = $('#exhibits-cards-grid');
-    const searchInput = $('#collection-search');
-    const sortSelect = $('#sort-exhibits');
-    const chipButtons = $$('#collection-chips [data-type]');
-    const countDisplay = $('#collection-count');
-    const emptyState = $('#collection-empty');
-    const clearBtn = $('#collection-clear');
+    $root.find('#exhibits-cards-grid .card').attr({ tabindex: 0, role: 'button', 'aria-haspopup': 'dialog' });
+    $root.on('keydown', '#exhibits-cards-grid .card', function (event) {
+      if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); $(this).trigger('click'); }
+    });
+    // Обработчик на родителе работает и для будущих карточек; прямая привязка их не увидит.
+    $root.on('click', '#exhibits-cards-grid .card', function () {
+      const $card = $(this);
+      const id = $card.parent().data('id') || $card.parent().attr('id')?.replace('exhibit-card-', '') || '1';
+      const title = $card.find('.card-title').text().trim();
+      const imgSrc = $card.find('img').attr('src');
+      const desc = $card.find('.card-text').text().trim();
 
-    if (!tbody) return;
+      $('#exhibitModalLabel').text(title);
+      $('#modal-exhibit-img').attr('src', imgSrc).attr('alt', title);
+      const badges = $card.find('.badge');
+      const type = badges.first().text().trim();
+      const year = badges.last().text().trim();
+      $('#modal-exhibit-inv').text(`Collection item ${id}`);
+      $('#modal-exhibit-meta .badge').eq(0).text(type);
+      $('#modal-exhibit-meta .badge').eq(1).text(year);
+      $('#modal-exhibit-meta .badge').eq(2).text('Museum collection');
+      if (window.bootstrap) bootstrap.Tab.getOrCreateInstance($('#overview-tab')[0]).show();
+      $('#modal-exhibit-desc').text(desc);
 
-    const items = $$('tr', tbody).map(row => {
-      const title = row.cells[0]?.textContent.trim() || '';
-      const id = row.dataset.id;
-      const card = $(`#exhibit-card-${id}`);
-      return {
-        id,
-        row,
-        card,
-        title,
-        sortTitle: title.replace(/^[^\p{L}\p{N}]+/u, ''),
-        type: row.cells[1]?.textContent.trim().toLowerCase() || '',
-        year: parseInt(row.cells[2]?.textContent, 10) || 0,
-        text: row.textContent.toLowerCase(),
-        imgSrc: $('img', card)?.getAttribute('src') || '',
-        desc: $('.card-text', card)?.textContent.trim() || ''
-      };
+      showModal('#exhibitModal');
     });
 
-    const state = { query: '', type: 'all', sort: 'default' };
+    const originalCards = $('#exhibits-cards-grid').children('div').get();
+    const $searchInput = $('#collection-search');
+    const $sortSelect = $('#sort-exhibits');
+    const $chipButtons = $('#collection-chips [data-type]');
+    const $countDisplay = $('#collection-count');
+    const $emptyState = $('#collection-empty');
 
-    const sorters = {
-      default: () => 0,
-      'year-asc': (a, b) => a.year - b.year,
-      'year-desc': (a, b) => b.year - a.year,
-      'title-asc': (a, b) => a.sortTitle.localeCompare(b.sortTitle)
-    };
-
-    function render() {
-      const q = state.query.toLowerCase().trim();
+    function filterCollection() {
+      const query = String($searchInput.val() || '').toLowerCase().trim();
+      const activeType = $('#collection-chips .active').data('type') || 'all';
       let shown = 0;
 
-      [...items].sort(sorters[state.sort]).forEach(item => {
-        const visible = (state.type === 'all' || item.type === state.type) && item.text.includes(q);
+      const $grid = $('#exhibits-cards-grid');
+      const $cols = $(originalCards).detach(); // Start from museum order, even after a previous sort.
 
-        if (tbody && item.row) tbody.append(item.row);
-        if (grid && item.card) grid.append(item.card);
+      $cols.each(function () {
+        const $col = $(this);
+        const cardText = $col.text().toLowerCase();
+        const cardType = $col.find('.badge').first().text().toLowerCase().trim();
 
-        if (item.row) item.row.hidden = !visible;
-        if (item.card) item.card.hidden = !visible;
+        const matchesQuery = cardText.includes(query);
+        const matchesType = (activeType === 'all' || cardType.includes(activeType));
 
-        if (visible) shown++;
+        $col.toggle(matchesQuery && matchesType);
+        if (matchesQuery && matchesType) shown++;
       });
 
-      if (countDisplay) {
-        countDisplay.textContent = `Showing ${shown} of ${items.length} exhibits`;
-      }
-      if (emptyState) {
-        emptyState.hidden = shown > 0;
-      }
-    }
-
-    searchInput?.addEventListener('input', e => {
-      state.query = e.target.value;
-      render();
-    });
-
-    sortSelect?.addEventListener('change', e => {
-      state.sort = e.target.value;
-      render();
-    });
-
-    chipButtons.forEach(btn => {
-      btn.addEventListener('click', () => {
-        setActive(chipButtons, btn);
-        state.type = btn.dataset.type || 'all';
-        render();
-      });
-    });
-
-    clearBtn?.addEventListener('click', () => {
-      state.query = '';
-      state.type = 'all';
-      state.sort = 'default';
-
-      if (searchInput) searchInput.value = '';
-      if (sortSelect) sortSelect.value = 'default';
-
-      if (chipButtons.length) setActive(chipButtons, chipButtons[0]);
-      render();
-    });
-
-    // --- НАПОЛНЕНИЕ ПРЕМИУМ-МОДАЛКИ ПРИ ОТКРЫТИИ ---
-    const modalEl = $('#exhibitModal');
-    if (modalEl) {
-      $$('tbody tr, #exhibits-cards-grid .card', root).forEach(trigger => {
-        trigger.tabIndex = 0;
-        trigger.setAttribute('role', 'button');
-        trigger.dataset.bsToggle = 'modal';
-        trigger.dataset.bsTarget = '#exhibitModal';
-
-        trigger.addEventListener('keydown', e => {
-          if (e.key === 'Enter' || e.key === ' ') {
-            e.preventDefault();
-            trigger.click();
+      const sortVal = $sortSelect.val();
+      if (sortVal !== 'default') {
+        $cols.sort(function (a, b) {
+          const $a = $(a), $b = $(b);
+          if (sortVal === 'title-asc') {
+            return $a.find('.card-title').text().localeCompare($b.find('.card-title').text());
           }
+          const yearA = parseInt($a.find('.badge').last().text(), 10) || 0;
+          const yearB = parseInt($b.find('.badge').last().text(), 10) || 0;
+          return sortVal === 'year-asc' ? yearA - yearB : yearB - yearA;
         });
-      });
+      }
 
-      modalEl.addEventListener('show.bs.modal', e => {
-        const trigger = e.relatedTarget?.closest('[data-id]') || e.relatedTarget;
-        const id = trigger?.dataset?.id || '1';
-        const card = $(`#exhibit-card-${id}`);
-        if (!card) return;
-
-        const title = $('.card-title', card)?.textContent.trim() || '';
-        const img = $('img', card);
-        const badges = $$('.badge', card);
-        const typeText = badges[0]?.textContent.trim() || 'Artifact';
-        const yearText = badges[1]?.textContent.trim() || 'Historical Era';
-        const desc = $('.card-text', card)?.textContent.trim() || '';
-
-        const modalTitle = $('#exhibitModalLabel');
-        const modalImg = $('#modal-exhibit-img');
-        const modalMeta = $('#modal-exhibit-meta');
-        const modalDesc = $('#modal-exhibit-desc');
-        const modalInv = $('#modal-exhibit-inv');
-
-        if (modalTitle) modalTitle.textContent = title;
-        if (modalImg && img) {
-          modalImg.src = img.getAttribute('src');
-          modalImg.alt = title;
-        }
-        if (modalInv) modalInv.textContent = `INV-1927/0${id}`;
-        if (modalMeta) {
-          modalMeta.innerHTML = `
-            <span class="badge bg-primary fs-6">${typeText}</span>
-            <span class="badge bg-light text-dark border fs-6">${yearText}</span>
-            <span class="badge bg-success-subtle text-success border border-success fs-6">🟢 Original Artifact</span>
-          `;
-        }
-        if (modalDesc) modalDesc.textContent = desc;
-
-        // По умолчанию активируем первую вкладку Overview
-        const firstTab = $('#overview-tab');
-        if (firstTab && window.bootstrap) {
-          bootstrap.Tab.getOrCreateInstance(firstTab).show();
-        }
-      });
-
-      // Обработка кнопок аудио и зума
-      $('#btn-modal-audio')?.addEventListener('click', () => {
-        showToast('🎧 Playing audio guide overview...');
-      });
-      $('#btn-modal-zoom')?.addEventListener('click', () => {
-        showToast('🔍 HD Image preview ready.');
-      });
+      $grid.append($cols); // Re-attach sorted columns
+      $countDisplay.text(`Showing ${shown} of ${originalCards.length} exhibits`);
+      $emptyState.prop('hidden', shown > 0);
     }
 
-    render();
+    $searchInput.on('input', filterCollection);
+    $sortSelect.on('change', filterCollection);
+
+    function selectCategory($button) {
+      $chipButtons.removeClass('btn-success active').addClass('btn-outline-success').attr('aria-pressed', 'false');
+      $button.removeClass('btn-outline-success').addClass('btn-success active').attr('aria-pressed', 'true');
+      filterCollection();
+    }
+    $chipButtons.on('click', function () { selectCategory($(this)); });
+
+    $chipButtons.attr('aria-pressed', 'false').filter('.active').attr('aria-pressed', 'true');
+    filterCollection();
+
+    $('#collection-clear').on('click', function () {
+      $searchInput.val('');
+      $sortSelect.val('default');
+      selectCategory($chipButtons.first());
+    });
   }
 
-  /* ==========================================================================
-     3. Страница Галереи (gallery.html)
-     ========================================================================== */
-  const HOTSPOTS = [
-    [
-      { x: 28, y: 62, title: 'Traditional furniture', text: 'Wooden furniture arranged to recreate the atmosphere of the writer\'s era.' },
-      { x: 62, y: 48, title: 'Period interior', text: 'The room is furnished to show how people lived and worked in the early 20th century.' }
-    ],
-    [
-      { x: 30, y: 40, title: 'Clock', text: 'A historical clock preserved in the showcase with other everyday objects.' },
-      { x: 55, y: 62, title: 'Dishes', text: 'Household dishes that belonged to the period and are kept behind glass.' },
-      { x: 78, y: 45, title: 'Personal items', text: 'Rare personal items that help visitors imagine the writer\'s daily life.' }
-    ],
-    [
-      { x: 50, y: 40, title: 'Authentic suit', text: 'A suit reflecting early 20th-century fashion, displayed in a glass showcase.' },
-      { x: 50, y: 80, title: 'Glass showcase', text: 'A protective display that preserves the fabric and stitching.' }
-    ]
-  ];
-
+  // Галерея: .on(), .attr() и .text() сокращают обработчики и обновление фото.
+  // Цепочки короче, а расчёт индекса остаётся обычным JavaScript.
   const FACTS = [
     'Saken Seifullin is regarded as one of the founders of modern Kazakh literature.',
     'Seifullin was a poet, a prose writer and a public figure at the same time.',
     'His autobiographical novel "Thorny Path" is one of his best-known prose works.',
     '"Asau Tulpar" ("The Wild Steed") is one of his famous collections of poetry.',
-    'This museum keeps a manuscript of one of his poems dated 1922.',
-    'The collection includes a 1936 petition written by his wife, Gulbakhram Seifullina, in support of her husband.',
-    'After the repressions of the 1930s, Seifullin was rehabilitated posthumously in the 1950s.'
+    'This museum keeps a manuscript of one of his poems dated 1922.'
   ];
 
   function initGallery() {
-    const galleryRoot = $('#gallery-main-content');
-    if (!galleryRoot) return;
+    if (!$('#gallery-main-content').length) return;
 
-    const factBtn = $('#btn-fact-of-day');
-    const factBox = $('#fact-container');
-    let factIndex = 0;
+    $('#btn-fact-of-day').on('click', function () {
+      const randomFact = FACTS[Math.floor(Math.random() * FACTS.length)];
+      $('#fact-container')
+        .hide()
+        .removeClass('d-none')
+        .html(`<strong>💡 Fact of the Day:</strong> ${randomFact}`)
+        .slideDown(300);
+    });
 
-    if (factBtn && factBox) {
-      factBtn.addEventListener('click', () => {
-        factBox.classList.remove('d-none');
-        factBox.hidden = false;
-        factBox.textContent = '';
-        
-        const strong = document.createElement('strong');
-        strong.textContent = '💡 Fact of the Day: ';
-        factBox.append(strong, document.createTextNode(FACTS[factIndex]));
+    const $cards = $('.gallery-card-col');
+    const photos = $cards.map(function () {
+      const $card = $(this);
+      return {
+        src: $card.find('img').attr('src') || '',
+        title: $card.find('.card-title').text().trim(),
+        desc: $card.find('.card-text').text().trim(),
+        tag: $card.find('.badge').text().trim() || 'Interior'
+      };
+    }).get();
 
-        factIndex = (factIndex + 1) % FACTS.length;
-        factBtn.textContent = '💡 Another fact';
-      });
-    }
-
-    const carousel = $('#museumCarousel');
-    if (carousel) {
-      carousel.addEventListener('slid.bs.carousel', e => {
-        const counter = $('#photo-counter');
-        if (counter) counter.textContent = `Photo ${e.to + 1} of 3`;
-      });
-    }
-
-    const modalEl = $('#lightboxModal');
-    if (!modalEl) return;
-
-    const cards = $$('.gallery-card-col');
-    const photos = cards.map(card => ({
-      src: $('img', card)?.getAttribute('src') || '',
-      title: $('.card-title', card)?.textContent.trim() || '',
-      desc: $('.card-text', card)?.textContent.trim() || '',
-      tag: $('.badge', card)?.textContent.trim() || 'Interior'
-    }));
-
-    const wrap = $('#lightbox-img-wrapper');
-    const img = $('#lightbox-img');
-    const spots = $('#hotspots-container');
-    const focusTitle = $('#hotspot-focus-title');
-    const focusDesc = $('#hotspot-focus-desc');
-    const defaults = { 
-      title: focusTitle?.textContent || '📍 Interactive Hotspots', 
-      desc: focusDesc?.textContent.trim() || 'Hover or click on any pulsing gold marker on the photograph to inspect highlighted artifacts.' 
-    };
-
-    const found = photos.map(() => new Set());
-    let index = 0;
+    let currentIndex = 0;
     let zoom = 1;
-    let pan = { x: 0, y: 0 };
-
-    function renderZoom() {
-      if (!wrap) return;
-      const limitX = (wrap.offsetWidth * (zoom - 1)) / 2;
-      const limitY = (wrap.offsetHeight * (zoom - 1)) / 2;
-      pan.x = Math.max(-limitX, Math.min(limitX, pan.x));
-      pan.y = Math.max(-limitY, Math.min(limitY, pan.y));
-      wrap.style.transform = `translate(${pan.x}px, ${pan.y}px) scale(${zoom})`;
-      wrap.classList.toggle('zoomed', zoom > 1);
-      const zoomResetBtn = $('#btn-gallery-zoom-reset');
-      if (zoomResetBtn) zoomResetBtn.textContent = `${Math.round(zoom * 100)}%`;
-    }
-
     function setZoom(value) {
       zoom = Math.min(3, Math.max(1, value));
-      if (zoom === 1) pan = { x: 0, y: 0 };
-      renderZoom();
+      $('#lightbox-img-wrapper').css('transform', `scale(${zoom})`);
+      $('#btn-gallery-zoom-reset').text(`${Math.round(zoom * 100)}%`);
+      $('#btn-gallery-zoom-in').prop('disabled', zoom >= 3).text('+');
+      $('#btn-gallery-zoom-out').prop('disabled', zoom <= 1).text('−');
     }
 
-    function inspect(hotspot, n, button) {
-      if (spots) $$('.hotspot', spots).forEach(b => b.classList.toggle('active', b === button));
-      const isNew = !found[index].has(n);
-      found[index].add(n);
-      const total = (HOTSPOTS[index] || []).length;
-      if (focusTitle) focusTitle.textContent = `📍 ${hotspot.title}`;
-      if (focusDesc) focusDesc.textContent = `${hotspot.text} (${found[index].size}/${total} details found)`;
-      if (isNew && found[index].size === total) showToast('🔎 You found every detail in this photo!');
-    }
+    function showPhoto(idx) {
+      currentIndex = (idx + photos.length) % photos.length;
+      const photo = photos[currentIndex] || photos[0];
 
-    function show(i) {
-      index = (i + photos.length) % photos.length;
-      const photo = photos[index] || photos[0];
-      if (img) {
-        img.src = photo.src;
-        img.alt = photo.title;
-      }
-      
-      const cardTitle = $('#lightbox-card-title');
-      const descEl = $('#lightbox-desc');
-      const tagEl = $('#lightbox-tag');
-
-      if (cardTitle) cardTitle.textContent = photo.title;
-      if (descEl) descEl.textContent = photo.desc;
-      if (tagEl) tagEl.textContent = photo.tag;
-      if (focusTitle) focusTitle.textContent = defaults.title;
-      if (focusDesc) focusDesc.textContent = defaults.desc;
+      $('#lightbox-img').attr('src', photo.src).attr('alt', photo.title);
+      setText({ '#lightbox-card-title': photo.title, '#lightbox-desc': photo.desc, '#lightbox-tag': photo.tag });
       setZoom(1);
-
-      if (spots) {
-        spots.replaceChildren(...(HOTSPOTS[index] || []).map((hotspot, n) => {
-          const button = el('button', 'hotspot');
-          button.type = 'button';
-          button.style.left = `${hotspot.x}%`;
-          button.style.top = `${hotspot.y}%`;
-          button.setAttribute('aria-label', hotspot.title);
-          ['mouseenter', 'focus', 'click'].forEach(type => button.addEventListener(type, () => inspect(hotspot, n, button)));
-          return button;
-        }));
-      }
+      $('#photo-counter').text(`Photo ${currentIndex + 1} of ${photos.length}`);
     }
 
-    const openModal = i => {
-      show(i);
-      if (window.bootstrap && bootstrap.Modal) {
-        bootstrap.Modal.getOrCreateInstance(modalEl).show();
-      }
+    $('#museumCarousel').on('slid.bs.carousel', function (event) {
+      $('#photo-counter').text(`Photo ${event.to + 1} of ${photos.length}`);
+    });
+    const $modalEl = $('#lightboxModal');
+    $modalEl.on('hidden.bs.modal', function () { setZoom(1); });
+    setZoom(1);
+    function openLightbox(idx) {
+      showPhoto(idx);
+      showModal('#lightboxModal');
+    }
+
+    $cards.on('click', function () {
+      const idx = $(this).data('index') !== undefined ? $(this).data('index') : $(this).index();
+      openLightbox(idx);
+    });
+
+    $('#museumCarousel .carousel-item').on('click', function () {
+      openLightbox($(this).index());
+    });
+
+    const controls = {
+      '#btn-lightbox-prev': () => showPhoto(currentIndex - 1),
+      '#btn-lightbox-next': () => showPhoto(currentIndex + 1),
+      '#btn-gallery-zoom-in': () => setZoom(zoom + 0.5),
+      '#btn-gallery-zoom-out': () => setZoom(zoom - 0.5),
+      '#btn-gallery-zoom-reset': () => setZoom(1)
     };
-
-    $$('#museumCarousel .carousel-item').forEach((slide, idx) => {
-      slide.style.cursor = 'pointer';
-      slide.addEventListener('click', () => openModal(idx));
-    });
-
-    cards.forEach((card, idx) => {
-      card.style.cursor = 'pointer';
-      card.addEventListener('click', () => openModal(idx));
-    });
-
-    $('#btn-lightbox-prev')?.addEventListener('click', () => show(index - 1));
-    $('#btn-lightbox-next')?.addEventListener('click', () => show(index + 1));
-    $('#btn-gallery-zoom-in')?.addEventListener('click', () => setZoom(zoom + 0.5));
-    $('#btn-gallery-zoom-out')?.addEventListener('click', () => setZoom(zoom - 0.5));
-    $('#btn-gallery-zoom-reset')?.addEventListener('click', () => setZoom(1));
-    modalEl.addEventListener('hidden.bs.modal', () => setZoom(1));
+    $.each(controls, (selector, action) => $(selector).on('click', action));
   }
 
-  /* ==========================================================================
-     4. Страница Посещения и Отзывов (feedback.html)
-     ========================================================================== */
-  function initVisit() {
-    const form = $('#excursion-form');
-    if (!form) return;
+  // Бронирование: .val() и .toggleClass() заменяют чтение полей и classList.
+  // Общая проверка понятнее, но полная валидация не всегда короче.
+  function initBooking() {
+    const $form = $('#excursion-form');
+    if (!$form.length) return;
 
     const PRICES = { adult: 1000, student: 500, senior: 300, group: 600 };
     const NAME_RE = /^\p{L}[\p{L}'’.-]*(\s+\p{L}[\p{L}'’.-]*)+$/u;
     const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
-    const isGroup = () => $('#type-group')?.checked || false;
-    const qty = selector => Math.max(0, parseInt($(selector)?.value, 10) || 0);
-    const dateInput = $('#visit-date');
-    const timeSelect = $('#visit-time');
-    if (dateInput) dateInput.min = localISO(new Date());
+
+    $('.ticket-qty, #qty-group-people').attr('step', '1').each(function () {
+      const $field = $(this);
+      if (!$field.siblings('.invalid-feedback').length) $field.after($('<div>', { class: 'invalid-feedback', role: 'alert' }));
+    });
+    const isGroup = () => $('#type-group').is(':checked');
+
+    const $dateInput = $('#visit-date');
+    const $timeSelect = $('#visit-time');
+    if ($dateInput.length) $dateInput.attr('min', todayISO(new Date()));
 
     function syncVisitType() {
-      $('#calculator-individual')?.classList.toggle('d-none', isGroup());
-      $('#calculator-group')?.classList.toggle('d-none', !isGroup());
-      $('#group-org-block')?.classList.toggle('d-none', !isGroup());
+      $('#calculator-individual').toggleClass('d-none', isGroup());
+      $('#calculator-group').toggleClass('d-none', !isGroup());
+      $('#group-org-block').toggleClass('d-none', !isGroup());
+      $('#org-name, #qty-group-people').prop('required', isGroup()).prop('disabled', !isGroup());
+      $('.ticket-qty').prop('disabled', isGroup());
+      $form.find('.is-valid, .is-invalid').removeClass('is-valid is-invalid');
     }
 
     function fillSlots() {
-      if (!dateInput || !timeSelect) return;
-      const value = dateInput.value;
-      const hours = value ? HOURS[new Date(`${value}T00:00`).getDay()] : undefined;
+      if (!$dateInput.length || !$timeSelect.length) return;
+      const val = $dateInput.val();
+      const hours = val ? HOURS[new Date(`${val}T00:00`).getDay()] : undefined;
       const now = new Date();
-      const slots = [];
+      $timeSelect.empty();
+
       if (hours) {
         for (let h = hours[0]; h < hours[1]; h++) {
-          if (value === localISO(now) && h <= now.getHours()) continue;
-          slots.push(new Option(`${pad(h)}:00 – ${pad(h + 1)}:00`, `${pad(h)}:00`));
+          if (val === todayISO(now) && h <= now.getHours()) continue;
+          $timeSelect.append(new Option(`${twoDigits(h)}:00 – ${twoDigits(h + 1)}:00`, `${twoDigits(h)}:00`));
         }
       }
-      const placeholder = !value ? 'Select date first...' : !hours ? 'Museum is closed this day' : slots.length ? 'Select a time slot...' : 'No slots left today';
-      timeSelect.replaceChildren(new Option(placeholder, '', true, true), ...slots);
-      timeSelect.options[0].disabled = true;
-      timeSelect.classList.remove('is-valid', 'is-invalid');
+
+      let placeholder = 'Select a time slot...';
+      if (!val) placeholder = 'Select date first...';
+      else if (!hours) placeholder = 'Museum is closed this day';
+      else if (!$timeSelect.children().length) placeholder = 'No slots left today';
+
+      $timeSelect.prepend(new Option(placeholder, '', true, true));
+      $timeSelect.find('option:first').prop('disabled', true);
     }
 
-    function getOrder() {
+    function renderBreakdown(selector, lines) {
+      const $box = $(selector).empty();
+      lines.forEach(([label, sum]) => {
+        $box.append(`<div class="d-flex justify-content-between"><span>${label}</span><span>${formatPrice(sum)}</span></div>`);
+      });
+      return $box;
+    }
+
+    function calculateOrder() {
       const lines = [];
       let people = 0;
       let saved = 0;
+
       if (isGroup()) {
-        people = qty('#qty-group-people');
+        people = ticketQuantity($('#qty-group-people').val());
         lines.push([`Group tariff × ${people}`, people * PRICES.group]);
         saved = people * (PRICES.adult - PRICES.group);
       } else {
         [['adult', 'Adult'], ['student', 'Student'], ['senior', 'Child / Senior']].forEach(([key, label]) => {
-          const n = qty(`#qty-${key}`);
-          people += n;
-          if (n) lines.push([`${label} × ${n}`, n * PRICES[key]]);
+          const qty = ticketQuantity($(`#qty-${key}`).val());
+          people += qty;
+          if (qty > 0) lines.push([`${label} × ${qty}`, qty * PRICES[key]]);
         });
       }
-      $$('.extra-service:checked').forEach(box => {
-        lines.push([box.nextElementSibling.textContent.replace(/\s*\(.*\)/, ''), Number(box.value)]);
+
+      $('.extra-service:checked').each(function () {
+        const labelText = $(this).next('label').text().replace(/\s*\(.*\)/, '');
+        lines.push([labelText, Number($(this).val())]);
       });
-      return { lines, people, saved, total: lines.reduce((sum, line) => sum + line[1], 0) };
+
+      const total = lines.reduce((sum, item) => sum + item[1], 0);
+
+      const $box = renderBreakdown('#price-breakdown-list', lines);
+      if (!people) $box.append('<div class="text-danger">Add at least one ticket to continue.</div>');
+      if (saved > 0) $box.append(`<div class="text-success mt-1">You save ${formatPrice(saved)} with group discount!</div>`);
+
+      $('#total-price-display').text(formatPrice(total));
+      return { lines, people, total };
     }
 
-    function renderReceipt(box, order) {
-      if (!box) return;
-      const rows = order.lines.map(([label, sum]) => {
-        const row = el('div', 'receipt-row');
-        row.append(el('span', '', label), el('span', '', fmt(sum)));
-        return row;
-      });
-      box.replaceChildren(...rows);
-      if (!order.people) box.append(el('div', 'text-danger', 'Add at least one ticket to continue.'));
-      if (order.saved) box.append(el('div', 'receipt-saved', `You save ${fmt(order.saved)} compared with adult tickets.`));
+    function ticketQuantity(value) {
+      const number = Number(value);
+      return String(value).trim() && Number.isSafeInteger(number) && number >= 0 ? number : 0;
     }
-
-    function renderOrder() {
-      const order = getOrder();
-      renderReceipt($('#price-breakdown-list'), order);
-      const totalDisplay = $('#total-price-display');
-      if (totalDisplay) totalDisplay.textContent = fmt(order.total);
-      return order;
-    }
-
-    const rules = {
-      'visitor-name': v => NAME_RE.test(v.trim()) || 'Please enter your first and last name.',
-      'visitor-email': v => EMAIL_RE.test(v.trim()) || 'Please provide a valid email, e.g. name@example.com.',
-      'org-name': v => !isGroup() || v.trim().length >= 2 || 'Please enter the name of your organization.',
-      'qty-group-people': v => !isGroup() || parseInt(v, 10) >= 10 || 'The large group tariff starts from 10 people.',
-      'visit-time': v => Boolean(v) || 'Please select a time slot.',
-      'visit-date': v => {
-        if (!v) return 'Please choose a date.';
-        if (v < dateInput.min) return 'The date cannot be in the past.';
-        return HOURS[new Date(`${v}T00:00`).getDay()] ? true : 'The museum is closed on Mondays. Please choose Tue–Sun.';
+    function validateBooking() {
+      const currentDate = new Date();
+      const date = String($dateInput.val() || '');
+      const visit = new Date(`${date}T00:00`);
+      const hours = HOURS[visit.getDay()];
+      const validDate = /^\d{4}-\d{2}-\d{2}$/.test(date) && !Number.isNaN(visit.getTime()) &&
+        todayISO(visit) === date && date >= todayISO(currentDate) && !!hours;
+      const time = String($timeSelect.val() || '');
+      const hour = Number(time.slice(0, 2));
+      const validTime = validDate && /^\d{2}:00$/.test(time) && hour >= hours[0] && hour < hours[1] &&
+        (date !== todayISO(currentDate) || hour > currentDate.getHours());
+      const checks = [
+        ['#visitor-name', NAME_RE.test(String($('#visitor-name').val() || '').trim()), 'Please enter your full name.'],
+        ['#visitor-email', EMAIL_RE.test(String($('#visitor-email').val() || '').trim()), 'Please provide a valid email.'],
+        ['#visit-date', validDate, 'Choose today or a future working day (Tuesday–Sunday).'],
+        ['#visit-time', validTime, 'Select an available future time slot.']
+      ];
+      if (isGroup()) {
+        checks.push(['#org-name', String($('#org-name').val() || '').trim().length >= 2, 'Please enter your organization.']);
       }
-    };
-
-    const validate = input => {
-      if (!input || !rules[input.id]) return true;
-      const result = rules[input.id](input.value);
-      return check(input, result === true, result);
-    };
-
-    form.addEventListener('input', e => {
-      const target = e.target;
-      if (target.name === 'visitType') syncVisitType();
-      if (target === dateInput) { fillSlots(); validate(dateInput); }
-      else if (rules[target.id] && (target.classList.contains('is-valid') || target.classList.contains('is-invalid'))) validate(target);
-      renderOrder();
-    });
-
-    form.addEventListener('change', e => {
-      if (e.target === timeSelect || e.target === dateInput) validate(e.target);
-    });
-
-    form.addEventListener('reset', () => setTimeout(() => {
-      $$('.is-valid, .is-invalid', form).forEach(node => node.classList.remove('is-valid', 'is-invalid'));
+      const $quantities = isGroup() ? $('#qty-group-people') : $('.ticket-qty');
+      const people = $quantities.toArray().reduce((sum, field) => sum + ticketQuantity($(field).val()), 0);
+      $quantities.each(function () {
+        const value = String($(this).val() || '').trim();
+        const number = Number(value);
+        const minimum = isGroup() ? 10 : 0;
+        checks.push([`#${this.id}`, value !== '' && Number.isSafeInteger(number) && number >= minimum && people > 0,
+          isGroup() ? 'Enter a whole number of at least 10 visitors.' : 'Use whole, non-negative quantities and select at least one ticket.']);
+      });
+      let valid = true;
+      checks.forEach(([selector, ok, message]) => { if (!setFieldState($(selector), ok, message)) valid = false; });
+      return valid;
+    }
+    function refreshBooking() {
       syncVisitType();
       fillSlots();
-      renderOrder();
-    }, 0));
-
-    form.addEventListener('submit', e => {
-      e.preventDefault();
-      const ids = ['visitor-name', 'visitor-email', 'visit-date', 'visit-time'];
-      if (isGroup()) ids.push('org-name', 'qty-group-people');
-      const invalid = ids.map(id => $(`#${id}`)).filter(input => !validate(input));
-      const order = renderOrder();
-
-      if (invalid.length) {
-        invalid[0].focus();
-        showToast('Please fix the highlighted fields.');
-        return;
-      }
-      if (!order.people) {
-        $('#qty-adult')?.focus();
-        showToast('Please add at least one ticket.');
-        return;
-      }
-
-      const modalEl = $('#bookingPreviewModal');
-      if (modalEl && window.bootstrap) {
-        const prettyDate = new Date(`${dateInput.value}T00:00`).toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
-        $('#prev-name').textContent = $('#visitor-name')?.value.trim() || '';
-        $('#prev-email').textContent = $('#visitor-email')?.value.trim() || '';
-        $('#prev-datetime').textContent = `${prettyDate}, ${timeSelect.selectedOptions[0]?.text || ''}`;
-        $('#prev-type').textContent = isGroup() ? `Large group, ${$('#org-name')?.value.trim() || ''}` : 'Individual / small group';
-        renderReceipt($('#prev-breakdown'), order);
-        $('#prev-total').textContent = fmt(order.total);
-        bootstrap.Modal.getOrCreateInstance(modalEl).show();
-      }
-    });
-
-    $('#btn-confirm-demo-submit')?.addEventListener('click', () => {
-      const modalEl = $('#bookingPreviewModal');
-      if (modalEl && window.bootstrap) {
-        bootstrap.Modal.getInstance(modalEl)?.hide();
-      }
-      form.reset();
-      showToast('✅ Excursion request successfully submitted!');
-    });
-
-    syncVisitType();
-    fillSlots();
-    renderOrder();
-  }
-
-  function initReview() {
-    const form = $('#feedback-form');
-    if (!form) return;
-
-    const stars = $$('#rating-container span');
-    const text = $('#feedback-text');
-    const counter = $('#char-counter');
-    const labels = ['Poor', 'Fair', 'Good', 'Very good', 'Excellent'];
-    const categories = $$('#review-categories button');
-    let rating = 0;
-    let category = $('#review-categories .active')?.dataset.cat || 'Exhibits';
-
-    const paint = n => {
-      stars.forEach((star, i) => {
-        star.classList.toggle('on', i < n);
-        star.classList.toggle('off', i >= n);
-      });
-      const lbl = $('#rating-label');
-      if (lbl) lbl.textContent = n ? `${n}/5 — ${labels[n - 1]}` : 'Click a star to rate';
-    };
-
-    stars.forEach((star, i) => {
-      star.tabIndex = 0;
-      star.setAttribute('role', 'button');
-      star.addEventListener('mouseenter', () => paint(i + 1));
-      star.addEventListener('click', () => {
-        rating = i + 1;
-        const err = $('#rating-error');
-        if (err) err.textContent = '';
-        paint(rating);
-      });
-    });
-
-    $('#rating-container')?.addEventListener('mouseleave', () => paint(rating));
-    paint(0);
-
-    categories.forEach(btn => btn.addEventListener('click', () => {
-      category = btn.dataset.cat;
-      setActive(categories, btn);
-    }));
-
-    text?.addEventListener('input', () => {
-      if (counter && text) {
-        counter.textContent = `${text.value.length} / ${text.maxLength}`;
-      }
-    });
-
-    form.addEventListener('submit', e => {
-      e.preventDefault();
-      const val = text ? text.value.trim() : '';
-
-      if (!rating) {
-        const err = $('#rating-error');
-        if (err) err.textContent = 'Please choose a rating from 1 to 5 stars.';
-        return;
-      }
-      if (val.length < 10) {
-        text?.classList.add('is-invalid');
-        return;
-      }
-
-      text?.classList.remove('is-invalid');
-      const area = $('#feedback-response-area');
-      if (area) {
-        area.className = 'mt-3 p-3 rounded alert alert-success';
-        area.textContent = `🙏 Thank you! Your ${rating}/5 review about "${category}" was submitted.`;
-      }
-
-      form.reset();
-      rating = 0;
-      paint(0);
-      if (counter && text) counter.textContent = `0 / ${text.maxLength}`;
-    });
-  }
-
-  function initContacts() {
-    const badge = $('#museum-status-badge');
-    if (badge) {
-      const status = museumStatus();
-      badge.className = `badge ${status.cls} px-3 py-2 fs-6`;
-      badge.textContent = status.text;
+      calculateOrder();
     }
+    let submitted = false;
+    $form.on('input change', 'input, select', function (e) {
+      if (e.target.name === 'visitType') syncVisitType();
+      if (e.target.id === 'visit-date') fillSlots();
+      calculateOrder();
+      if (submitted) validateBooking();
+    });
+    $form.on('reset', function () {
+      // Пересчитываю форму после восстановления значений по умолчанию.
+      setTimeout(function () {
+        submitted = false;
+        refreshBooking();
+      }, 0);
+    });
+
+    $form.on('submit', function (e) {
+      // Без preventDefault форма перезагрузит страницу вместо показа заявки.
+      // Сервер тоже должен проверять данные: проверку в браузере можно обойти.
+      e.preventDefault();
+      submitted = true;
+      if (!validateBooking()) {
+        $form.find('.is-invalid:first').trigger('focus');
+        return;
+      }
+      const nameVal = String($('#visitor-name').val() || '').trim();
+      const emailVal = String($('#visitor-email').val() || '').trim();
+      const order = calculateOrder();
+
+      const $previewModal = $('#bookingPreviewModal');
+      if ($previewModal.length && window.bootstrap) {
+        setText({
+          '#prev-name': nameVal, '#prev-email': emailVal,
+          '#prev-datetime': `${$dateInput.val()}, ${$timeSelect.val()}`,
+          '#prev-type': isGroup() ? 'Large Group' : 'Individual / Small Group'
+        });
+
+        renderBreakdown('#prev-breakdown', order.lines);
+
+        $('#prev-total').text(formatPrice(order.total));
+        bootstrap.Modal.getOrCreateInstance($previewModal[0]).show();
+      }
+    });
+
+    $('#btn-confirm-demo-submit').on('click', function () {
+      if (!validateBooking()) {
+        bootstrap.Modal.getInstance($('#bookingPreviewModal')[0])?.hide();
+        return;
+      }
+      const $previewModal = $('#bookingPreviewModal');
+      if ($previewModal.length && window.bootstrap) {
+        bootstrap.Modal.getInstance($previewModal[0])?.hide();
+      }
+      const ref = Math.floor(100000 + Math.random() * 900000);
+      showToast(`Demo booking #${ref} created successfully!`);
+      $form[0].reset();
+      refreshBooking();
+    });
+
+    refreshBooking();
   }
 
-  /* ==========================================================================
-     Запуск всех модулей
-     ========================================================================== */
-  function init() {
-    initTextSize();
-    initScrollUI();
-    initCollection();
-    initGallery();
-    initVisit();
-    initReview();
-    initContacts();
+  // Отзыв: оценка, проверка текста и подтверждение.
+  function initReviews() {
+    const $form = $('#feedback-form');
+    if (!$form.length) return;
+
+    let selectedRating = 0;
+    const $stars = $('#rating-container span');
+
+    $stars.on('click', function () {
+      selectedRating = $(this).index() + 1;
+      $stars.each(function (idx) {
+        $(this).toggleClass('text-warning', idx < selectedRating).toggleClass('text-muted', idx >= selectedRating);
+      });
+      $('#rating-label').text(`${selectedRating} / 5`);
+      $('#rating-error').text('');
+    });
+
+    $('#feedback-text').on('input', function () {
+      const $text = $(this), value = $text.val();
+      $('#char-counter').text(`${value.length} / 500`);
+      $text.toggleClass('is-invalid', value.trim().length < 10);
+    });
+
+    $form.on('submit', function (e) {
+      e.preventDefault();
+
+      const $textInput = $('#feedback-text');
+      const textVal = $textInput.val().trim();
+
+      if (selectedRating === 0) {
+        $('#rating-error').text('Please select a rating star.');
+        return;
+      }
+
+      if (textVal.length < 10) {
+        $textInput.addClass('is-invalid');
+        return;
+      }
+
+      // Убираю d-none, скрываю блок, добавляю разметку и плавно показываю ответ.
+      $('#feedback-response-area')
+        .removeClass('d-none')
+        .hide()
+        .html(`<strong>Thank you!</strong> Your ${selectedRating}-star review has been posted in demo mode.`)
+        .fadeIn(400, function () {
+          setTimeout(() => $(this).fadeOut(400), 4000);
+        });
+
+      $form[0].reset();
+      $textInput.removeClass('is-valid is-invalid');
+      selectedRating = 0;
+      $stars.removeClass('text-warning').addClass('text-muted');
+      setText({ '#rating-label': '', '#char-counter': '0 / 500' });
+    });
   }
 
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', init);
-  } else {
-    init();
-  }
-})();
+  initContacts();
+  initCollection();
+  initGallery();
+  initBooking();
+  initReviews();
+});

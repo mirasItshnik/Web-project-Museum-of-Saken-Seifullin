@@ -1,26 +1,32 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="Get in touch with Saken Seifullin Museum, find location details, transport options, and frequently asked questions.">
+
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="css/base.css">
-  <link rel="stylesheet" href="./style1.css">
+  <link rel="stylesheet" href="css/site.css">
+
   <title>Contacts - Saken Seifullin Museum</title>
 </head>
+
 <body class="d-flex flex-column min-vh-100">
 
   <header class="bg-brand text-white shadow-sm">
     <nav class="navbar navbar-expand-lg navbar-dark bg-brand py-3" id="main-navbar">
       <div class="container-fluid">
+
         <a class="navbar-brand d-flex align-items-center gap-3 text-wrap" href="index.html" id="brand-link">
-          <img src="logo museum.jpg" alt="Museum logo" class="rounded" style="width: 50px; height: auto;">
+          <img src="images/logo museum.jpg" alt="Museum logo" class="rounded" style="width: 50px; height: auto;">
           <span>
             <strong class="d-block h5 mb-0">THE STATE MUSEUM</strong>
             <small class="fs-6 text-warning">named after S. Seifullin</small>
           </span>
         </a>
+
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation" id="navbar-toggler-btn">
           <span class="navbar-toggler-icon"></span>
         </button>
@@ -34,10 +40,11 @@
             <li class="nav-item"><a class="nav-link" href="gallery.html">Gallery</a></li>
             <li class="nav-item"><a class="nav-link" href="feedback.html">Visit & Feedback</a></li>
             <li class="nav-item"><a class="nav-link active" href="contacts.html">Contacts</a></li>
-            <li class="nav-item"><a class="nav-link" href="Museum history.html">Museum history</a></li>
+            <li class="nav-item"><a class="nav-link" href="museum-history.html">Museum history</a></li>
             <li class="nav-item"><a class="nav-link" href="poetry.html">Poetry Wall</a></li>
           </ul>
         </div>
+
       </div>
     </nav>
   </header>
@@ -47,24 +54,26 @@
       <div class="row">
         <div class="col-12 col-lg-8 text-center text-md-start">
           <h1 class="hero-title display-5 mb-3">Contacts &amp; Location</h1>
-          <p class="hero-subtitle lead mb-4">Find location details, transportation routes, and answers to visitor questions.</p>
+          <p class="hero-subtitle lead mb-4">
+            Find location details, transportation routes, and answers to visitor questions.
+          </p>
           <div class="gold-divider mx-auto mx-md-0"></div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Main Content Area -->
   <main class="container my-5">
     <div class="row g-5">
 
-      <!-- Left Column: Address, Live Hours & Interactive Map -->
       <div class="col-12 col-md-6">
         <section class="mb-4">
+
           <div class="d-flex align-items-center justify-content-between border-bottom pb-2 mb-3">
             <h2 class="h3 fw-bold text-success mb-0">Museum Address</h2>
-            <!-- Интерактивный статус работы в реальном времени -->
-            <span id="museum-status-badge" class="badge bg-secondary px-3 py-2 fs-6">Checking status...</span>
+            <span id="museum-status-badge" class="badge bg-secondary px-3 py-2 fs-6">
+              Checking status...
+            </span>
           </div>
 
           <address class="mb-4 lead fs-6">
@@ -72,128 +81,225 @@
             Mukhtar Auezov Street, Building 20<br>
             Astana, 010000<br>
             Republic of Kazakhstan<br>
-            Phone: <a href="tel:+77172986103" class="text-decoration-none fw-semibold text-success copy-contact" data-copy="+77172986103">+7 (7172) 98-61-03</a><br>
-            Email: <a href="mailto:info@seifullin-museum.kz" class="text-decoration-none fw-semibold text-success copy-contact" data-copy="info@seifullin-museum.kz">info@seifullin-museum.kz</a>
+
+            Phone:
+            <a href="tel:+77172986103"
+               class="text-decoration-none fw-semibold text-success copy-contact"
+               data-copy="+77172986103">
+              +7 (7172) 98-61-03
+            </a><br>
+
+            Email:
+            <a href="mailto:info@seifullin-museum.kz"
+               class="text-decoration-none fw-semibold text-success copy-contact"
+               data-copy="info@seifullin-museum.kz">
+              info@seifullin-museum.kz
+            </a>
           </address>
 
-          <!-- Interactive Map Container -->
           <div class="card border rounded p-2 bg-white shadow-sm w-100 mb-3">
             <div class="rounded overflow-hidden" style="height: 350px; position: relative;">
-              <iframe 
-                src="https://yandex.ru/map-widget/v1/?ll=71.423984%2C51.164506&z=17&pt=71.423984%2C51.164506%2Cpm2rdm" 
-                width="100%" 
-                height="100%" 
-                frameborder="0" 
-                allowfullscreen="true" 
+
+              <iframe
+                src="https://yandex.ru/map-widget/v1/?ll=71.423984%2C51.164506&amp;z=17&amp;pt=71.423984%2C51.164506%2Cpm2rdm"
+                width="100%"
+                height="100%"
+                frameborder="0"
+                allowfullscreen
                 style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0;"
                 title="Interactive Location Map of Saken Seifullin Museum">
               </iframe>
+
             </div>
+
             <div class="card-footer bg-transparent text-center border-0 pt-2 pb-1">
-              <small class="text-muted fw-semibold">📍 Interactive Map: Use your cursor/touch to zoom and move around</small>
+              <small class="text-muted fw-semibold">
+                📍 Interactive Map: Use your cursor/touch to zoom and move around
+              </small>
             </div>
           </div>
 
-          <!-- Быстрое построение маршрута в навигаторах -->
           <div class="card bg-light border-0 p-3 rounded mb-3 shadow-sm">
-            <p class="fw-bold mb-2 small text-uppercase text-secondary">Build Route in Navigators:</p>
+            <p class="fw-bold mb-2 small text-uppercase text-secondary">
+              Build Route in Navigators:
+            </p>
+
             <div class="d-flex flex-wrap gap-2">
-              <a href="https://2gis.kz/astana/search/ул.%20Мухтара%20Ауэзова%2C%2020" target="_blank" rel="noopener" class="btn btn-outline-success btn-sm flex-fill">2GIS</a>
-              <a href="https://yandex.ru/maps/?text=ул.+Мухтара+Ауэзова,+20,+Астана" target="_blank" rel="noopener" class="btn btn-outline-primary btn-sm flex-fill">Yandex Maps</a>
-              <a href="https://www.google.com/maps/search/?api=1&query=Saken+Seifullin+Museum+Astana" target="_blank" rel="noopener" class="btn btn-outline-danger btn-sm flex-fill">Google Maps</a>
+
+              <a href="https://2gis.kz/astana/search/ул.%20Мухтара%20Ауэзова%2C%2020"
+                 target="_blank"
+                 rel="noopener"
+                 class="btn btn-outline-success btn-sm flex-fill">
+                2GIS
+              </a>
+
+              <a href="https://yandex.ru/maps/?text=ул.+Мухтара+Ауэзова,+20,+Астана"
+                 target="_blank"
+                 rel="noopener"
+                 class="btn btn-outline-primary btn-sm flex-fill">
+                Yandex Maps
+              </a>
+
+              <a href="https://www.google.com/maps/search/?api=1&amp;query=Saken+Seifullin+Museum+Astana"
+                 target="_blank"
+                 rel="noopener"
+                 class="btn btn-outline-danger btn-sm flex-fill">
+                Google Maps
+              </a>
+
             </div>
           </div>
 
           <div>
-            <a href="tel:+77172986103" class="btn btn-success w-100 py-2">☎ Call the Museum</a>
+            <a href="tel:+77172986103" class="btn btn-success w-100 py-2">
+              ☎ Call the Museum
+            </a>
           </div>
+
         </section>
       </div>
 
-      <!-- Right Column: Getting Here & FAQ -->
       <div class="col-12 col-md-6">
+
         <section class="mb-4">
-          <h2 class="h3 fw-bold mb-3 text-success border-bottom pb-2">Getting Here</h2>
-          <p class="text-muted fs-6 mb-4">The museum can be reached via public bus lines 10, 12, and 21. The nearest bus stop is <kbd class="bg-dark">Auezov Street</kbd>.</p>
+          <h2 class="h3 fw-bold mb-3 text-success border-bottom pb-2">
+            Getting Here
+          </h2>
+
+          <p class="text-muted fs-6 mb-4">
+            The museum can be reached via public bus lines 10, 12, and 21.
+            The nearest bus stop is
+            <kbd class="bg-dark">Auezov Street</kbd>.
+          </p>
         </section>
 
-        <!-- FAQ Section -->
         <section>
-          <h2 class="h3 fw-bold mb-3 text-success border-bottom pb-2">Frequently Asked Questions</h2>
+
+          <h2 class="h3 fw-bold mb-3 text-success border-bottom pb-2">
+            Frequently Asked Questions
+          </h2>
+
           <div class="accordion shadow-sm rounded border" id="faqAccordion">
-            
+
             <div class="accordion-item">
               <h3 class="accordion-header">
-                <button class="accordion-button fw-semibold" type="button" data-bs-toggle="collapse" data-bs-target="#faq1">
+                <button class="accordion-button fw-semibold"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#faq1">
                   Is photography allowed inside?
                 </button>
               </h3>
-              <div id="faq1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
+
+              <div id="faq1"
+                   class="accordion-collapse collapse show"
+                   data-bs-parent="#faqAccordion">
+
                 <div class="accordion-body text-muted">
-                  Yes, non-flash photography is permitted for personal use. Professional video shooting requires prior permission.
+                  Yes, non-flash photography is permitted for personal use.
+                  Professional video shooting requires prior permission.
                 </div>
+
               </div>
             </div>
 
             <div class="accordion-item">
               <h3 class="accordion-header">
-                <button class="accordion-button collapsed fw-semibold" type="button" data-bs-toggle="collapse" data-bs-target="#faq2">
+                <button class="accordion-button collapsed fw-semibold"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#faq2">
                   Is the museum accessible for wheelchairs?
                 </button>
               </h3>
-              <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+
+              <div id="faq2"
+                   class="accordion-collapse collapse"
+                   data-bs-parent="#faqAccordion">
+
                 <div class="accordion-body text-muted">
-                  Yes, the main exhibition halls are equipped with accessible entrances and ramps.
+                  Yes, the main exhibition halls are equipped with
+                  accessible entrances and ramps.
                 </div>
+
               </div>
             </div>
 
             <div class="accordion-item">
               <h3 class="accordion-header">
-                <button class="accordion-button collapsed fw-semibold" type="button" data-bs-toggle="collapse" data-bs-target="#faq3">
+                <button class="accordion-button collapsed fw-semibold"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#faq3">
                   Do I need to book group visits in advance?
                 </button>
               </h3>
-              <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+
+              <div id="faq3"
+                   class="accordion-collapse collapse"
+                   data-bs-parent="#faqAccordion">
+
                 <div class="accordion-body text-muted">
-                  For groups larger than 10 people, we recommend calling the museum in advance to ensure a comfortable tour experience.
+                  For groups larger than 10 people, we recommend calling
+                  the museum in advance to ensure a comfortable tour experience.
                 </div>
+
               </div>
             </div>
 
           </div>
+
         </section>
+
       </div>
 
     </div>
   </main>
 
-  <!-- Unified Museum Footer -->
   <footer class="bg-brand text-white pt-4 pb-3 mt-auto">
     <div class="container">
+
       <div class="row gy-3 text-center text-md-start">
+
         <div class="col-12 col-md-4">
           <strong class="d-block mb-1">Администрация</strong>
-          <a href="tel:+77172998042" class="text-white text-decoration-none">☎ +7 (7172) 99-80-42</a>
+          <a href="tel:+77172998042" class="text-white text-decoration-none">
+            ☎ +7 (7172) 99-80-42
+          </a>
         </div>
+
         <div class="col-12 col-md-4">
           <strong class="d-block mb-1">Музей</strong>
-          <a href="tel:+77172986103" class="text-white text-decoration-none">☎ +7 (7172) 98-61-03</a>
+          <a href="tel:+77172986103" class="text-white text-decoration-none">
+            ☎ +7 (7172) 98-61-03
+          </a>
         </div>
+
         <div class="col-12 col-md-4">
           <strong class="d-block mb-1">Адрес</strong>
           <p class="mb-0">ул. Мухтара Ауэзова, 20</p>
         </div>
+
       </div>
+
       <hr class="border-light my-3">
-      <div class="text-center text-muted small"> 
-        <p class="mb-0 text-white">&copy; 2026 Saken Seifullin Museum. All rights reserved. <a href="colophon.html" class="text-warning">Colophon</a></p>
+
+      <div class="text-center text-muted small">
+        <p class="mb-0 text-white">
+          &copy; 2026 Saken Seifullin Museum.
+          All rights reserved.
+          <a href="README.md" class="text-warning">Project notes</a>
+        </p>
       </div>
+
     </div>
   </footer>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="js/script.js" defer></script>
+
+  <!-- jQuery 3.7.1 must load before our custom jQuery script. -->
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script src="js/assignment4-jquery.js"></script>
 
 </body>
 </html>
