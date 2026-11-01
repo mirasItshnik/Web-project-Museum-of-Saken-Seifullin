@@ -1,54 +1,62 @@
-# Saken Seifullin Museum — учебный сайт
+# Saken Seifullin Museum
 
-## Структура
-- `index.html` — главная страница и точка входа.
-- Остальные `.html` — страницы сайта; находятся в корне для простой навигации.
-- `css/site.css` — основной стиль, ранее `style1.css` в корне.
-- `css/base.css` — базовые стили.
-- `css/style1.css`, `css/maks.css` — дополнительные существующие стили.
-- `js/` — JavaScript: интерактивные элементы и логика страниц.
-- `images/` — все изображения.
+We built this website as a team project for Introduction to Web Technologies. Our site introduces Saken Seifullin’s life, literary heritage and museum collection. For Assignment 6, we continued working on the same project and added jQuery to its interactive features.
 
-## Запуск
-Откройте `index.html` через расширение Live Server в VS Code.
-При добавлении изображений используйте путь `images/имя-файла` в HTML и `../images/имя-файла` в CSS.
+**Group:** SE-2533
 
-## jQuery assignment
+**Team:** Miras Kaldybek, Muratov Maksat, Sabira Baikadamova
 
-jQuery 3.7.1 loads from the official CDN before our scripts. Open the site with Live Server. An internet connection is needed for jQuery and Bootstrap. JavaScript lives in external files; no inline event attributes are used.
+- [Our website](https://mirasitshnik.github.io/Web-project-Museum-of-Saken-Seifullin/)
+- [Our repository](https://github.com/mirasItshnik/Web-project-Museum-of-Saken-Seifullin)
 
-### Rewritten features and comparison
+## What we used
 
-- `js/main.js`: delegated collection details and filters, gallery viewer and useful effects, booking validation and calculation. Each rewritten feature has a comparison comment.
-- `js/assignment4-jquery.js`: history timeline and animated statistics, poetry filtering and generated cards, FAQ and contact-information correction drafts.
-- `js/old-js-version.js`: archived plain JavaScript for comparison, never linked to a page. Per-author archives are retained too.
+We use HTML, CSS, Bootstrap 5.3.3, JavaScript and jQuery 3.7.1. Bootstrap helps us with the responsive layout, navigation and modals. We use jQuery for events, filtering, DOM updates, effects and validation.
 
-### Demonstrate at defense
+## Our pages
 
-1. Collection: search, category, title/year sorting, then Museum order/Clear Filters; open multiple objects and compare their metadata.
-2. Gallery: carousel counter, previous/next, − / 100% / + photo zoom and Fact of the Day.
-3. Feedback: submit blank; fix name/email and see errors disappear; test a past date, Monday, no time, negative/fractional tickets and group below 10. A group also needs an organization. Verify reset updates prices and slots.
-4. Reviews: choose stars and enter at least 10 characters; confirmation fades in and out with a callback.
-5. Poetry: generate extra cards using Show More and open one. Its click is caught by a delegated handler attached before the card existed.
-6. Contacts: open FAQ answers and the contact-information correction form. Choose a topic, describe the issue and optionally suggest a correction. Test invalid/valid phone numbers and email addresses, prepare an email draft, then edit a field to clear the stale draft. No email is sent automatically.
-7. Museum History: switch timeline years and scroll to Museum Key Metrics to see each counter animate once.
+- **Home:** an introduction to the museum and its highlights.
+- **Biography:** Seifullin’s life and key events.
+- **Exhibitions:** an overview of the exhibitions.
+- **Collection:** exhibit search, category filters, sorting and detail modals.
+- **Gallery:** a photo carousel, viewer with previous/next buttons, zoom and random facts.
+- **Visit & Feedback:** a ticket calculator, booking preview, field validation and visitor reviews.
+- **Contacts:** the museum map, contact links, FAQ, opening status and a way to report incorrect contact information.
+- **Museum History:** a timeline and animated museum statistics.
+- **Poetry Wall:** poetry search, category filters, detail modals, text copying and additional cards created from an array.
 
-### Methods to explain
+## What we changed with jQuery
 
-- `.text()` treats content as text; `.html()` parses markup and is used here with fixed/trusted content.
-- `.attr()` reads/writes HTML attributes; `.prop('checked')` reads the checkbox's current state, unlike the initial `checked` attribute.
-- `.find()`, `.closest()`, `.parent()`, `.siblings()`, `.each()` traverse actual DOM relationships. Selectors include IDs, classes, elements, attributes and filters such as `:checked`, `:first`, `:not()`.
-- All application event listeners use `.on()`. Effects include fadeIn, fadeOut, slideDown, slideUp and slideToggle, with durations/callbacks.
-- Existing classes control selection and validation states. Gallery zoom uses `.css('transform', ...)` to scale the photo; this remains an exception to the assignment's class-only appearance requirement. jQuery effects also set temporary animation styles internally.
-- Per-ticket errors, extra poem cards, the contact-information correction form and price breakdown are created in JavaScript. Feedback booking has no phone field. Contacts validates an optional suggested phone/email correction only when supplied; its draft is opened in the visitor’s email app.
-- Booking and reviews are demos. The contact correction feature prepares a mailto draft; the visitor reviews and sends it in an email app. Browser validation does not secure a real service: a server must validate independently, including dates, quantities and availability.
+We rewrote collection interactions, gallery controls and booking validation using jQuery. We also use it for the history timeline, FAQ and Poetry Wall.
 
-### Configured opening hours
+We attach events with `.on()`. Delegation lets visitors open poem cards that are created after the page has loaded. We use `.find()`, `.closest()`, `.parent()` and `.siblings()` to work with related elements, and `.text()`, `.html()`, `.val()`, `.attr()` and `.prop()` to update the page.
 
-Contacts status and Feedback booking use the same schedule: Monday closed; Tuesday–Friday 10:00–18:00; Saturday–Sunday 10:00–17:00. Calculations currently use the visitor’s device local date/time. This documents the project configuration, not independently verified museum opening hours.
+Our effects have specific uses: FAQ answers slide open, confirmations fade in and out, and museum statistics count up when they appear on screen. The gallery has − / 100% / + controls for photo zoom.
 
-### Remaining submission checks
+We kept the previous plain JavaScript versions in `js/old-js-version.js` and the individual archive files so they can be compared with the jQuery version. We do not connect these archives to our pages.
 
-- Continue in the existing Web-assigment-1 team repository. Before submission, verify real commits from each member: at least four across three different days (six if solo).
-- Compare HTML/CSS to your midterm freeze commit: that baseline is not present here, so freeze compliance cannot be certified from this folder alone.
-- Browser console and visual checks still need a real Live Server browser session. Syntax/static and focused logic checks do not replace that step.
+## Forms
+
+Our booking form checks the visitor’s name, email, date, time and ticket quantities. Large groups must have at least 10 visitors and provide an organization name. The calculator shows the ticket and service costs before the booking preview. Booking and reviews are demonstrations; we do not store them on a server.
+
+On Contacts, visitors can report a possible mistake in a phone number, email, address or map location. They describe the issue and can suggest a correction. We validate the correction according to its type, then prepare an email draft. The visitor reviews and sends it in their email app; our website does not send it automatically.
+
+Contacts and Feedback use the same configured opening hours: Monday closed, Tuesday–Friday 10:00–18:00, Saturday–Sunday 10:00–17:00. The calculation uses the visitor’s device local time.
+
+## Project structure
+
+- HTML pages are in the project root.
+- `css/` contains our styles; `css/site.css` is the main stylesheet.
+- `images/` contains the website images.
+- `js/main.js` handles Collection, Gallery and Feedback.
+- `js/assignment4-jquery.js` handles Museum History, Poetry Wall and Contacts. We kept its existing filename.
+- `js/old-js-version*.js` contains the comparison archives.
+- `js/script.js` is a legacy file and is not connected to the current pages.
+
+## How to run
+
+1. Open the project folder in VS Code.
+2. Open `index.html` with Live Server.
+3. Use an internet connection to load Bootstrap, jQuery and external maps.
+
+No build step is needed. When adding images, we use `images/filename` in HTML and `../images/filename` in CSS.
