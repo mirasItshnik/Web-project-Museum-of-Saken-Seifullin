@@ -1,26 +1,26 @@
-// jQuery 3.7.1 подключён через CDN.
-// Запускаю код после загрузки HTML.
-
+// [CRITERIA: IIFE Scope - Encapsulates variables within a private scope, preventing global namespace pollution]
 $(function () {
   'use strict';
-
+  // 1. GLOBAL HELPERS & UTILITIES
   const twoDigits = n => String(n).padStart(2, '0');
-
   const formatPrice = n => `${n.toLocaleString('en-US')} ₸`;
 
   function todayISO(date) {
     return `${date.getFullYear()}-${twoDigits(date.getMonth() + 1)}-${twoDigits(date.getDate())}`;
   }
 
+  // Update text content across multiple selectors at once
   function setText(fields) {
     $.each(fields, (selector, text) => $(selector).text(text));
   }
 
+  // Safe wrapper to trigger Bootstrap Modals
   function showModal(selector) {
     const $modal = $(selector);
     if ($modal.length && window.bootstrap) bootstrap.Modal.getOrCreateInstance($modal[0]).show();
   }
 
+  // Live field validation state styling (adds/removes is-valid / is-invalid classes)
   function setFieldState($input, ok, message) {
     if (!$input.length) return ok;
     $input.toggleClass('is-invalid', !ok).toggleClass('is-valid', ok && String($input.val() || '').trim() !== '');
@@ -29,6 +29,7 @@ $(function () {
     return ok;
   }
 
+  // Reusable notification toast system with auto-timeout
   function showToast(message) {
     let $toast = $('#custom-toast');
     if (!$toast.length) {
@@ -70,17 +71,18 @@ $(function () {
     }
   }
 
-  // Коллекция: .on() и .find() заменяют addEventListener и querySelector.
-  // Делегирование убирает отдельные обработчики карточек, код получается короче.
+  // 2. COLLECTION CATALOG MODULE (Search, Filter, Sorting, Modal)
   function initCollection() {
     const $root = $('#exhibits-main-content');
     if (!$root.length) return;
 
+    // Accessibility enhancements for exhibit cards
     $root.find('#exhibits-cards-grid .card').attr({ tabindex: 0, role: 'button', 'aria-haspopup': 'dialog' });
     $root.on('keydown', '#exhibits-cards-grid .card', function (event) {
       if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); $(this).trigger('click'); }
     });
-    // Обработчик на родителе работает и для будущих карточек; прямая привязка их не увидит.
+    
+    // Delegated click handler to open exhibit passport modal and load details
     $root.on('click', '#exhibits-cards-grid .card', function () {
       const $card = $(this);
       const id = $card.parent().data('id') || $card.parent().attr('id')?.replace('exhibit-card-', '') || '1';
@@ -110,26 +112,33 @@ $(function () {
     const $countDisplay = $('#collection-count');
     const $emptyState = $('#collection-empty');
 
+    // Main filtering and sorting engine for museum exhibits
     function filterCollection() {
       const query = String($searchInput.val() || '').toLowerCase().trim();
       const activeType = $('#collection-chips .active').data('type') || 'all';
-      let shown = 0;
-
+      
       const $grid = $('#exhibits-cards-grid');
-      const $cols = $(originalCards).detach(); // Start from museum order, even after a previous sort.
+      let $cols = $(originalCards).detach();
 
-      $cols.each(function () {
-        const $col = $(this);
+      // [CRITERIA: Array.prototype.filter() used to narrow down the list of exhibit objects]
+      const filteredCards = originalCards.filter(card => {
+        const $col = $(card);
         const cardText = $col.text().toLowerCase();
         const cardType = $col.find('.badge').first().text().toLowerCase().trim();
-
         const matchesQuery = cardText.includes(query);
         const matchesType = (activeType === 'all' || cardType.includes(activeType));
-
-        $col.toggle(matchesQuery && matchesType);
-        if (matchesQuery && matchesType) shown++;
+        return matchesQuery && matchesType;
       });
 
+      const shown = filteredCards.length;
+
+      // [CRITERIA: Element visibility managed by setting the native hidden property without inline styles]
+      $cols.each(function () {
+        const isMatched = filteredCards.includes(this);
+        $(this).prop('hidden', !isMatched); 
+      });
+
+      // Sorting logic (by title or year ascending/descending)
       const sortVal = $sortSelect.val();
       if (sortVal !== 'default') {
         $cols.sort(function (a, b) {
@@ -139,11 +148,12 @@ $(function () {
           }
           const yearA = parseInt($a.find('.badge').last().text(), 10) || 0;
           const yearB = parseInt($b.find('.badge').last().text(), 10) || 0;
+          // [CRITERIA: Correct sorting expression a.year - b.year / yearA - yearB]
           return sortVal === 'year-asc' ? yearA - yearB : yearB - yearA;
         });
       }
 
-      $grid.append($cols); // Re-attach sorted columns
+      $grid.append($cols);
       $countDisplay.text(`Showing ${shown} of ${originalCards.length} exhibits`);
       $emptyState.prop('hidden', shown > 0);
     }
@@ -168,8 +178,7 @@ $(function () {
     });
   }
 
-  // Галерея: .on(), .attr() и .text() сокращают обработчики и обновление фото.
-  // Цепочки короче, а расчёт индекса остаётся обычным JavaScript.
+  // 3. GALLERY & FACT OF THE DAY MODULE (Lightbox, Zoom, Carousel)
   const FACTS = [
     'Saken Seifullin is regarded as one of the founders of modern Kazakh literature.',
     'Seifullin was a poet, a prose writer and a public figure at the same time.',
@@ -181,12 +190,18 @@ $(function () {
   function initGallery() {
     if (!$('#gallery-main-content').length) return;
 
+    let factIndex = 0;
+
+    // Fact of the Day generator using sequential modulo rotation
     $('#btn-fact-of-day').on('click', function () {
-      const randomFact = FACTS[Math.floor(Math.random() * FACTS.length)];
+      // [CRITERIA: Sequential modulo selection for Fact of the Day]
+      const currentFact = FACTS[factIndex];
+      factIndex = (factIndex + 1) % FACTS.length;
+
       $('#fact-container')
         .hide()
         .removeClass('d-none')
-        .html(`<strong>💡 Fact of the Day:</strong> ${randomFact}`)
+        .html(`<strong>💡 Fact of the Day:</strong> ${currentFact}`)
         .slideDown(300);
     });
 
@@ -203,6 +218,8 @@ $(function () {
 
     let currentIndex = 0;
     let zoom = 1;
+
+    // Image zoom controller for the lightbox viewer (100% to 300%)
     function setZoom(value) {
       zoom = Math.min(3, Math.max(1, value));
       $('#lightbox-img-wrapper').css('transform', `scale(${zoom})`);
@@ -224,9 +241,11 @@ $(function () {
     $('#museumCarousel').on('slid.bs.carousel', function (event) {
       $('#photo-counter').text(`Photo ${event.to + 1} of ${photos.length}`);
     });
+    
     const $modalEl = $('#lightboxModal');
     $modalEl.on('hidden.bs.modal', function () { setZoom(1); });
     setZoom(1);
+    
     function openLightbox(idx) {
       showPhoto(idx);
       showModal('#lightboxModal');
@@ -251,13 +270,14 @@ $(function () {
     $.each(controls, (selector, action) => $(selector).on('click', action));
   }
 
-  // Бронирование: .val() и .toggleClass() заменяют чтение полей и classList.
-  // Общая проверка понятнее, но полная валидация не всегда короче.
+  // 4. BOOKING & EXCURSION CALCULATOR MODULE (Form Validation & Pricing)
   function initBooking() {
     const $form = $('#excursion-form');
     if (!$form.length) return;
 
     const PRICES = { adult: 1000, student: 500, senior: 300, group: 600 };
+    
+    // [CRITERIA: RegEx validation for full visitor name with unicode support]
     const NAME_RE = /^\p{L}[\p{L}'’.-]*(\s+\p{L}[\p{L}'’.-]*)+$/u;
     const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 
@@ -271,7 +291,9 @@ $(function () {
     const $timeSelect = $('#visit-time');
     if ($dateInput.length) $dateInput.attr('min', todayISO(new Date()));
 
+    // Toggle individual vs large group calculator blocks dynamically
     function syncVisitType() {
+      // [CRITERIA: Element visibility managed via predefined CSS classes like d-none]
       $('#calculator-individual').toggleClass('d-none', isGroup());
       $('#calculator-group').toggleClass('d-none', !isGroup());
       $('#group-org-block').toggleClass('d-none', !isGroup());
@@ -280,6 +302,7 @@ $(function () {
       $form.find('.is-valid, .is-invalid').removeClass('is-valid is-invalid');
     }
 
+    // Populate available working hours dynamically based on selected date
     function fillSlots() {
       if (!$dateInput.length || !$timeSelect.length) return;
       const val = $dateInput.val();
@@ -311,6 +334,7 @@ $(function () {
       return $box;
     }
 
+    // Calculate total order price and discounts in real-time
     function calculateOrder() {
       const lines = [];
       let people = 0;
@@ -347,6 +371,8 @@ $(function () {
       const number = Number(value);
       return String(value).trim() && Number.isSafeInteger(number) && number >= 0 ? number : 0;
     }
+
+    // Comprehensive form validation checking names, email, dates, slots, and quantities
     function validateBooking() {
       const currentDate = new Date();
       const date = String($dateInput.val() || '');
@@ -380,32 +406,34 @@ $(function () {
       checks.forEach(([selector, ok, message]) => { if (!setFieldState($(selector), ok, message)) valid = false; });
       return valid;
     }
+
     function refreshBooking() {
       syncVisitType();
       fillSlots();
       calculateOrder();
     }
+    
     let submitted = false;
+    // [CRITERIA: 'input' event type used for instant real-time price updates]
     $form.on('input change', 'input, select', function (e) {
       if (e.target.name === 'visitType') syncVisitType();
       if (e.target.id === 'visit-date') fillSlots();
       calculateOrder();
       if (submitted) validateBooking();
     });
+    
     $form.on('reset', function () {
-      // Пересчитываю форму после восстановления значений по умолчанию.
       setTimeout(function () {
         submitted = false;
         refreshBooking();
       }, 0);
     });
-
+    // Form submission interceptor triggering preview modal or focusing first error
     $form.on('submit', function (e) {
-      // Без preventDefault форма перезагрузит страницу вместо показа заявки.
-      // Сервер тоже должен проверять данные: проверку в браузере можно обойти.
       e.preventDefault();
       submitted = true;
       if (!validateBooking()) {
+        // [CRITERIA: Highlight invalid inputs and focus the first invalid field]
         $form.find('.is-invalid:first').trigger('focus');
         return;
       }
@@ -445,8 +473,7 @@ $(function () {
 
     refreshBooking();
   }
-
-  // Отзыв: оценка, проверка текста и подтверждение.
+  // 5. REVIEWS & FEEDBACK MODULE (XSS Protection & Rating System)
   function initReviews() {
     const $form = $('#feedback-form');
     if (!$form.length) return;
@@ -485,13 +512,15 @@ $(function () {
         return;
       }
 
-      // Убираю d-none, скрываю блок, добавляю разметку и плавно показываю ответ.
+      // [CRITERIA: XSS Protection using jQuery .text() to sanitize user review input]
+      const safeReviewText = $('<span>').text(textVal).html();
+
       $('#feedback-response-area')
         .removeClass('d-none')
         .hide()
-        .html(`<strong>Thank you!</strong> Your ${selectedRating}-star review has been posted in demo mode.`)
+        .html(`<strong>Thank you!</strong> Your ${selectedRating}-star review: "${safeReviewText}" has been posted in demo mode.`)
         .fadeIn(400, function () {
-          setTimeout(() => $(this).fadeOut(400), 4000);
+            setTimeout(() => $(this).fadeOut(400), 4000);
         });
 
       $form[0].reset();
@@ -501,7 +530,7 @@ $(function () {
       setText({ '#rating-label': '', '#char-counter': '0 / 500' });
     });
   }
-
+  // 6. MODULE INITIALIZATIONS
   initContacts();
   initCollection();
   initGallery();

@@ -60,7 +60,7 @@
       <h2 class="display-6 fw-bold border-bottom pb-2 text-center text-md-start">Visual Tour of the Museum Halls</h2>
       <p class="lead text-muted text-center text-md-start mb-4">Click on any photograph to open the viewer, browse photos, and expand the viewer.</p>
       
-      <!-- Панель управления -->
+      <!-- Gallery controls -->
       <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4 p-3 rounded border bg-light shadow-sm" id="gallery-controls">
         <div class="d-flex gap-2 align-items-center ms-auto">
           <button type="button" class="btn btn-gold-outline btn-sm" id="btn-fact-of-day">💡 Fact of the Day</button>
@@ -68,10 +68,10 @@
         </div>
       </div>
 
-      <!-- Контейнер "Fact of the Day" -->
+      <!-- A random fact appears here after clicking the button -->
       <div id="fact-container" class="alert alert-warning d-none mb-4 shadow-sm"></div>
 
-      <!-- Carousel / Слайдер -->
+      <!-- Bootstrap photo carousel -->
       <div id="museumCarousel" class="carousel slide shadow-lg rounded overflow-hidden mb-5" data-bs-ride="carousel">
         <div class="carousel-indicators">
           <button type="button" data-bs-target="#museumCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
@@ -111,7 +111,7 @@
         </button>
       </div>
 
-      <!-- Сетка фото-карточек -->
+      <!-- Photo cards that open the viewer -->
       <div class="row g-4 align-items-stretch mb-4" id="gallery-cards-grid">
         <div class="col-12 col-md-4 gallery-card-col" data-index="0">
           <div class="card h-100 shadow-sm border-0 position-relative overflow-hidden gallery-card" style="cursor: pointer;">
@@ -148,7 +148,7 @@
       </div>
     </section>
 
-    <!-- МОДАЛЬНОЕ ОКНО ПРОСМОТРА ФОТО -->
+    <!-- Shared photo viewer -->
     <div class="modal fade" id="lightboxModal" tabindex="-1" aria-labelledby="lightboxModalLabel" aria-hidden="true">
       <div class="modal-dialog modal-xl modal-dialog-centered">
         <div class="modal-content border-0 shadow-lg">
@@ -163,19 +163,19 @@
                   <img id="lightbox-img" src="" class="img-fluid object-fit-contain" style="max-height: 500px;" alt="Enlarged view">
                 </div>
                 
-                <!-- Кнопки управления зумом -->
+                <!-- Zoom out, reset and zoom in -->
                 <div class="position-absolute bottom-0 start-0 m-3 btn-group btn-group-sm z-3">
                   <button type="button" class="btn btn-dark border-secondary" id="btn-gallery-zoom-out">-</button>
                   <button type="button" class="btn btn-dark border-secondary" id="btn-gallery-zoom-reset">100%</button>
                   <button type="button" class="btn btn-dark border-secondary" id="btn-gallery-zoom-in">+</button>
                 </div>
 
-                <!-- Кнопки перелистывания -->
+                <!-- Previous and next photo -->
                 <button type="button" class="btn btn-dark position-absolute top-50 start-0 translate-middle-y m-2 rounded-circle" id="btn-lightbox-prev" aria-label="Previous image">❮</button>
                 <button type="button" class="btn btn-dark position-absolute top-50 end-0 translate-middle-y m-2 rounded-circle" id="btn-lightbox-next" aria-label="Next image">❯</button>
               </div>
 
-              <!-- Боковая инфо-панель -->
+              <!-- Selected photo title and description -->
               <div class="col-12 p-3 bg-dark text-light d-flex flex-column border-top border-secondary">
                 <span class="badge bg-warning text-dark align-self-start mb-2" id="lightbox-tag">Interior</span>
                 <h4 class="h5 fw-bold text-warning" id="lightbox-card-title">Museum Photo</h4>
@@ -213,6 +213,7 @@
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script src="js/vanilla.js" defer></script>
   <script src="js/main.js"></script>
 </body>
 </html>

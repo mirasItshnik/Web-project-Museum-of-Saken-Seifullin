@@ -56,7 +56,7 @@
 
   <main class="container my-5 flex-grow-1" id="exhibits-main-content">
 
-    <!-- ПАНЕЛЬ ПОИСКА И ФИЛЬТРАЦИИ -->
+    <!-- Search, category filters and sorting -->
     <section id="exhibits-catalog-section" aria-labelledby="catalog-title">
       <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
         <div>
@@ -99,7 +99,7 @@
         <p class="small mb-0 text-muted">Try adjusting your search term or category filter.</p>
       </div>
 
-      <!-- СЕТКА КАРТОЧЕК ЭКСПОНАТОВ -->
+      <!-- Exhibit cards -->
       <div class="row g-4" id="exhibits-cards-grid">
         
         <div class="col-12 col-md-6 col-lg-3" id="exhibit-card-1" data-id="1">
@@ -218,12 +218,12 @@
     </section>
   </main>
 
-  <!-- СВЕТЛОЕ ПРЕМИАЛЬНОЕ МОДАЛЬНОЕ ОКНО "EXHIBIT PASSPORT" -->
+  <!-- Shared modal for the selected exhibit -->
   <div class="modal fade" id="exhibitModal" tabindex="-1" aria-labelledby="exhibitModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-xl">
       <div class="modal-content border-0 shadow-lg overflow-hidden">
         
-        <!-- Шапка с золотым акцентом -->
+        <!-- Modal title and close button -->
         <div class="modal-header bg-brand text-white border-bottom border-warning border-3 px-4 py-3">
           <div class="d-flex align-items-center gap-2">
             <span class="fs-4">🏛️</span>
@@ -238,7 +238,7 @@
         <div class="modal-body p-0 bg-white">
           <div class="row g-0">
             
-            <!-- Левая колонка: Светлая панель для фото без затемнения -->
+            <!-- Exhibit photo -->
             <div class="col-12 col-lg-5 bg-light p-4 d-flex flex-column align-items-center justify-content-center text-center position-relative border-end border-secondary-subtle">
               <span class="position-absolute top-0 start-0 m-3 badge bg-warning text-dark fw-bold" id="modal-exhibit-inv">INV-1927/08</span>
               
@@ -248,17 +248,17 @@
               
             </div>
 
-            <!-- Правая колонка: Информация и вкладки -->
+            <!-- Exhibit information and tabs -->
             <div class="col-12 col-lg-7 p-4 p-md-5 d-flex flex-column bg-white">
               
-              <!-- Мета-теги -->
+              <!-- Exhibit type, year and collection label -->
               <div class="d-flex flex-wrap gap-2 mb-3" id="modal-exhibit-meta">
                 <span class="badge bg-primary fs-6">Book</span>
                 <span class="badge bg-light text-dark border fs-6">1927</span>
                 <span class="badge bg-success-subtle text-success border border-success fs-6">🟢 Original Artifact</span>
               </div>
 
-              <!-- Навигационные вкладки -->
+              <!-- Buttons for switching between the three tabs -->
               <ul class="nav nav-tabs mb-3" id="exhibitTab" role="tablist">
                 <li class="nav-item" role="presentation">
                   <button class="nav-link active fw-bold text-success" id="overview-tab" data-bs-toggle="tab" data-bs-target="#overview-tab-pane" type="button" role="tab">📜 Overview</button>
@@ -271,10 +271,10 @@
                 </li>
               </ul>
 
-              <!-- Контент вкладок -->
+              <!-- Tab content -->
               <div class="tab-content flex-grow-1" id="exhibitTabContent">
                 
-                <!-- Вкладка 1: Обзор -->
+                <!-- Overview and description -->
                 <div class="tab-pane fade show active" id="overview-tab-pane" role="tabpanel" aria-labelledby="overview-tab" tabindex="0">
                   <p class="text-secondary lead fs-6 mb-3" id="modal-exhibit-desc">Loading description...</p>
                   <div class="p-3 rounded bg-light border border-secondary-subtle">
@@ -283,7 +283,7 @@
                   </div>
                 </div>
 
-                <!-- Вкладка 2: Контекст -->
+                <!-- Historical context -->
                 <div class="tab-pane fade" id="context-tab-pane" role="tabpanel" aria-labelledby="context-tab" tabindex="0">
                   <p class="small text-muted mb-2">Created during the prolific period of Saken Seifullin's public and literary activity in the 1920s–1930s.</p>
                   <ul class="small text-secondary ps-3 mb-0">
@@ -292,7 +292,7 @@
                   </ul>
                 </div>
 
-                <!-- Вкладка 3: Происхождение -->
+                <!-- Origin and condition -->
                 <div class="tab-pane fade" id="details-tab-pane" role="tabpanel" aria-labelledby="details-tab" tabindex="0">
                   <div class="row g-2 small text-secondary">
                     <div class="col-6"><strong>Origin:</strong> Saken Seifullin Personal Archive</div>
@@ -304,7 +304,7 @@
 
               </div>
 
-              <!-- Подвал модалки -->
+              <!-- Museum name and close button -->
               <div class="pt-3 mt-3 border-top d-flex justify-content-between align-items-center">
                 <small class="text-muted">📍 Saken Seifullin State Museum, Astana</small>
                 <button type="button" class="btn btn-outline-secondary btn-sm px-4" data-bs-dismiss="modal">Close</button>
@@ -344,6 +344,7 @@
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script src="js/vanilla.js" defer></script>
   <script src="js/main.js"></script>
 </body>
 </html>
